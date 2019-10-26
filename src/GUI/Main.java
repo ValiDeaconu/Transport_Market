@@ -16,8 +16,12 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    public static void printHelloWorld() {
+        System.out.print("Hello World!");
+    }
 
     public static void main(String[] args) {
+        printHelloWorld();
         launch(args);
     }
 }

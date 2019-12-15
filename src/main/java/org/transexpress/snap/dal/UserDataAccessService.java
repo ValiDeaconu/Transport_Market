@@ -1,6 +1,7 @@
 package org.transexpress.snap.dal;
 
 import org.springframework.stereotype.Repository;
+import org.transexpress.snap.misc.DatabaseManager;
 import org.transexpress.snap.model.User;
 
 import java.util.*;
@@ -15,49 +16,11 @@ import java.sql.Statement;
 
 @Repository("mysql")
 public class UserDataAccessService implements UserDal {
-    private Connection connect() {
-        String dbHost = "remotemysql.com";
-        String dbPort = "3306";
-        String dbName = "gpltniDy4M";
-        String dbUser = "gpltniDy4M";
-        String dbPass = "0fxiXCFhSw";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("ClassNotFoundException: " + e);
-            return null;
-        }
-
-        Connection dbHandle = null;
-        try {
-            dbHandle = DriverManager.getConnection(
-                    "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName + "?useSSL=false",
-                    dbUser,
-                    dbPass
-            );
-        } catch (SQLException e) {
-            System.err.println("SQLException: " + e);
-            return null;
-        }
-
-        return dbHandle;
-    }
-
-    private boolean close(Connection handle) {
-        try {
-            handle.close();
-        } catch (SQLException e) {
-            System.err.println("SQLException: " + e);
-            return false;
-        }
-
-        return true;
-    }
 
     @Override
     public int insertUser(User user) {
-        Connection handle = connect();
+        Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
         try {
@@ -72,7 +35,7 @@ public class UserDataAccessService implements UserDal {
             System.err.println("Operation failed: " + e);
         }
 
-        close(handle);
+        DatabaseManager.close(handle);
 
         return rowCount;
     }
@@ -81,7 +44,7 @@ public class UserDataAccessService implements UserDal {
     public List<User> selectAllUsers() {
         List<User> result = new ArrayList<>();
 
-        Connection handle = connect();
+        Connection handle = DatabaseManager.connect();
         try {
             PreparedStatement ps = handle.prepareStatement("SELECT * FROM users;");
             ResultSet rst = ps.executeQuery();
@@ -115,14 +78,14 @@ public class UserDataAccessService implements UserDal {
             System.err.println("SQLException: " + ex);
         }
 
-        close(handle);
+        DatabaseManager.close(handle);
 
         return (result.size() == 0) ? null : result;
     }
 
     @Override
     public Optional<User> selectUserByID(int id) {
-        Connection handle = connect();
+        Connection handle = DatabaseManager.connect();
         Optional<User> result = Optional.empty();
         try {
             PreparedStatement ps = handle.prepareStatement("SELECT * FROM users WHERE id = " + id + ";");
@@ -155,14 +118,14 @@ public class UserDataAccessService implements UserDal {
             System.err.println("SQLException: " + ex);
         }
 
-        close(handle);
+        DatabaseManager.close(handle);
 
         return result.equals(Optional.empty()) ? Optional.empty() : result;
     }
 
     @Override
     public int deleteUserByID(int id) {
-        Connection handle = connect();
+        Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
         try {
@@ -175,14 +138,14 @@ public class UserDataAccessService implements UserDal {
             System.err.println("Operation failed: " + e);
         }
 
-        close(handle);
+        DatabaseManager.close(handle);
 
         return rowCount;
     }
 
     @Override
     public int updateUserByID(int id, User user) {
-        Connection handle = connect();
+        Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
         try {
@@ -204,7 +167,7 @@ public class UserDataAccessService implements UserDal {
             System.err.println("Operation failed: " + e);
         }
 
-        close(handle);
+        DatabaseManager.close(handle);
 
         return rowCount;
     }

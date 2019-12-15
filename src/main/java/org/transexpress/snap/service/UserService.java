@@ -15,7 +15,7 @@ public class UserService {
     private final UserDal userDal;
 
     @Autowired
-    public UserService(@Qualifier("mysql") UserDal userDal) {
+    public UserService(@Qualifier("mysql_users") UserDal userDal) {
         this.userDal = userDal;
     }
 

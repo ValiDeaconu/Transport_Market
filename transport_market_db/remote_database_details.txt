@@ -1,0 +1,9 @@
+Username: gpltniDy4M
+
+Database name: gpltniDy4M
+
+Password: 0fxiXCFhSw
+
+Server: remotemysql.com
+
+Port: 3306

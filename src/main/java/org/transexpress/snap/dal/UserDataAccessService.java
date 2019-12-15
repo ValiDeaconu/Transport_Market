@@ -14,7 +14,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-@Repository("mysql")
+@Repository("mysql_users")
 public class UserDataAccessService implements UserDal {
 
 

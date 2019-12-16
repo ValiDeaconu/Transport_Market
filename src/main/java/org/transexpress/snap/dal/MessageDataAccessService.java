@@ -3,7 +3,6 @@ package org.transexpress.snap.dal;
 import org.springframework.stereotype.Repository;
 import org.transexpress.snap.misc.DatabaseManager;
 import org.transexpress.snap.model.Message;
-import org.transexpress.snap.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;

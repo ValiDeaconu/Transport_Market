@@ -17,7 +17,6 @@ public class UserController {
 
     @Autowired
     public UserController(UserService userService) {
-
         this.userService = userService;
     }
 
@@ -38,7 +37,6 @@ public class UserController {
 
     @DeleteMapping(path = "{id}")
     public void deleteUserByID(@PathVariable("id") int id) {
-
         userService.deleteUser(id);
     }
 

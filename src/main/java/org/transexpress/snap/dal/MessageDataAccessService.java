@@ -34,37 +34,6 @@ public class MessageDataAccessService implements MessageDal {
     }
 
     @Override
-    public List<Message> selectAllMessagesBetweenUsers(int firstUserId, int secondUserId) {
-        List<Message> result = new ArrayList<>();
-
-        Connection handle = DatabaseManager.connect();
-        try {
-            PreparedStatement ps = handle.prepareStatement("SELECT * FROM messages" +
-                    " WHERE (senderId = " + firstUserId + ", receiverId = "  + secondUserId + ")" +
-                    " OR (senderId = " + secondUserId + ", receiverId = "  + firstUserId + ");");
-            ResultSet rst = ps.executeQuery();
-
-            while (rst.next()) {
-                int id = rst.getInt("id");
-                String message = rst.getString("message");
-                String date = rst.getString("date");
-                int senderId = rst.getInt("senderId");
-                int receiverId = rst.getInt("receiverId");
-                result.add(new Message(id, message, date, senderId, receiverId));
-            }
-
-            ps.close();
-            rst.close();
-        } catch (SQLException ex) {
-            System.err.println("SQLException: " + ex);
-        }
-
-        DatabaseManager.close(handle);
-
-        return (result.size() == 0) ? null : result;
-    }
-
-    @Override
     public Optional<Message> selectMessageByID(int id) {
         Connection handle = DatabaseManager.connect();
         Optional<Message> result = Optional.empty();
@@ -90,5 +59,79 @@ public class MessageDataAccessService implements MessageDal {
         DatabaseManager.close(handle);
 
         return result.equals(Optional.empty()) ? Optional.empty() : result;
+    }
+
+    @Override
+    public List<Message> selectAllMessages() {
+        List<Message> result = new ArrayList<>();
+
+        Connection handle = DatabaseManager.connect();
+        try {
+            PreparedStatement ps = handle.prepareStatement("SELECT * FROM messages;");
+            ResultSet rst = ps.executeQuery();
+
+            while (rst.next()) {
+                int id = rst.getInt("id");
+                String message = rst.getString("message");
+                String date = rst.getString("date");
+                int senderId = rst.getInt("senderId");
+                int receiverId = rst.getInt("receiverId");
+                result.add(new Message(id, message, date, senderId, receiverId));
+            }
+
+            ps.close();
+            rst.close();
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex);
+        }
+
+        DatabaseManager.close(handle);
+
+        return (result.size() == 0) ? null : result;
+    }
+
+    @Override
+    public int deleteMessageByID(int id) {
+        Connection handle = DatabaseManager.connect();
+
+        int rowCount = 0;
+        try {
+            Statement stmt = handle.createStatement();
+            rowCount = stmt.executeUpdate("DELETE FROM messages WHERE id = " + id + ";");
+
+            stmt.close();
+        }
+        catch (SQLException e) {
+            System.err.println("Operation failed: " + e);
+        }
+
+        DatabaseManager.close(handle);
+
+        return rowCount;
+    }
+
+    @Override
+    public int updateMessageByID(int id, Message message) {
+        Connection handle = DatabaseManager.connect();
+
+        int rowCount = 0;
+        try {
+            Statement stmt = handle.createStatement();
+            rowCount = stmt.executeUpdate("UPDATE messages " +
+                    "SET message = '" + message.getMessage() + "', " +
+                    "date = '" + message.getDate() + "', " +
+                    "senderId = " + message.getSenderId() + ", " +
+                    "receiverId = " + message.getReceiverId() + " " +
+                    "WHERE id = " + id + ";");
+
+            stmt.close();
+        }
+        catch (SQLException e) {
+            System.err.println("Operation failed: " + e);
+        }
+
+        DatabaseManager.close(handle);
+
+        return rowCount;
     }
 }

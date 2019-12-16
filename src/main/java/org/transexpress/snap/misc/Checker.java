@@ -1,0 +1,97 @@
+package org.transexpress.snap.misc;
+
+public class Checker {
+    private static Checker singleton;
+
+    public static Checker getInstance() {
+        if (singleton == null)
+            singleton = new Checker();
+
+        return singleton;
+    }
+
+    private Checker() { }
+
+    /**
+     * Checks if an id is valid (according to the database indexes)
+     * @param id index to check
+     * @return true if the index is between database indexes intervals
+     */
+    public boolean checkId(int id) {
+        return id > 0;
+    }
+
+    // Online REGEX Tester: regex101.com
+    /**
+     * Checks if a string is empty
+     * @param text string to check
+     * @return true if text is empty
+     */
+    public boolean isEmpty(String text) {
+        return text != null && !isEmpty(text) && text.equals("");
+    }
+
+    /**
+     * Checks if a string contains only digits
+     * @param text string to check
+     * @return true if string is numeric
+     */
+    public boolean isNumeric(String text) {
+        return text != null && !isEmpty(text) && text.matches("[0-9]+");
+    }
+
+    /**
+     * Checks if a string contains only lowercase and uppercase letters (english dictionary)
+     * @param text string to check
+     * @return true if string is alphabetic
+     */
+    public boolean isAlphabetic(String text) {
+        return text != null && !isEmpty(text) && text.matches("[a-zA-Z]+");
+    }
+
+    /**
+     * Checks if a string contains only lowercase and uppercase letters (english dictionary) and also digits
+     * @param text string to check
+     * @return true if string is alphanumeric
+     */
+    public boolean isAlphanumeric(String text) {
+        return text != null && !isEmpty(text) && text.matches("[a-zA-Z0-9]+");
+    }
+
+    /**
+     * Checks if a string contains only letters (eng. dict.), digits, '.' and '_'
+     * @param text string to check
+     * @return true if string is an username
+     */
+    public boolean isUsername(String text) {
+        return text != null && !isEmpty(text) && text.matches("[a-zA-Z0-9\\_\\.]+");
+    }
+
+    /**
+     * Checks if a string is formatted as an email address (username@host.domain)
+     * @param text string to check
+     * @return true if string is an email
+     */
+    public boolean isEmail(String text) {
+        return text != null && !isEmpty(text) && text.matches("[a-zA-Z0-9\\_\\.]+[\\@][a-zA-Z0-9]+[\\.][a-zA-Z]+");
+    }
+
+    /**
+     * Checks if a string is a phone number (contains exactly 10 digits)
+     * @param text string to check
+     * @return true if string is a phone number
+     */
+    public boolean isPhoneNumber(String text) {
+        return text != null && !isEmpty(text) && text.matches("[0-9]{10}");
+    }
+
+    /**
+     * Checks if a string is an URL (protocol://website.domain<...>)
+     * @param text string to check
+     * @return true if string is an URL
+     */
+    public boolean isLink(String text) {
+        return text != null && !isEmpty(text) && text.matches("(https?|ftp|file):\\/\\/[-a-zA-Z0-9+&@#\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\\/%=~_|]");
+    }
+
+}

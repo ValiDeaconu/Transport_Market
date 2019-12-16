@@ -1,6 +1,8 @@
 package org.transexpress.snap.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.transexpress.snap.misc.Checker;
+import org.transexpress.snap.misc.Formatter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -33,8 +35,7 @@ public class User {
                 @JsonProperty("description") String description,
                 @JsonProperty("profile_picture_link") String profile_picture_link,
                 @JsonProperty("isProvider") boolean isProvider,
-                @JsonProperty("isAdmin") boolean isAdmin
-                ) {
+                @JsonProperty("isAdmin") boolean isAdmin) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -80,5 +81,16 @@ public class User {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    public boolean isWellFormed() {
+        Checker checker = Checker.getInstance();
+
+        return checker.isUsername(username) &&
+                !checker.isEmpty(password) &&
+                checker.isPhoneNumber(phone) &&
+                checker.isEmail(email) &&
+                !checker.isEmpty(description) &&
+                checker.isLink(profile_picture_link);
     }
 }

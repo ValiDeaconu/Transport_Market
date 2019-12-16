@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.MessageDal;
 import org.transexpress.snap.model.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -23,7 +25,23 @@ public class MessageService {
     }
 
     public List<Message> selectAllMessagesBetweenUsers(int firstUserId, int secondUserId) {
-        return messageDal.selectAllMessagesBetweenUsers(firstUserId, secondUserId);
+        List<Message> messages = messageDal.selectAllMessages();
+
+        if (messages == null)
+            return null;
+
+        List<Message> messagesFromUser1ToUser2 = messages.stream()
+                .filter(m -> m.getSenderId() == firstUserId && m.getReceiverId() == secondUserId)
+                .collect(Collectors.toList());
+        List<Message> messagesFromUser2ToUser1 = messages.stream()
+                .filter(m -> m.getSenderId() == secondUserId && m.getReceiverId() == firstUserId)
+                .collect(Collectors.toList());
+
+        List<Message> total = new ArrayList<>();
+        total.addAll(messagesFromUser1ToUser2);
+        total.addAll(messagesFromUser2ToUser1);
+
+        return total;
     }
 
     public Optional<Message> selectMessageByID(int id) {

@@ -5,7 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseManager {
-    public static Connection connect() {
+    private static DatabaseManager singleton;
+
+    private DatabaseManager() { }
+
+    public static DatabaseManager getInstance(){
+        if (singleton == null){
+            singleton = new DatabaseManager();
+        }
+        return singleton;
+    }
+
+    private Connection initConnection() {
         String dbHost = "remotemysql.com";
         String dbPort = "3306";
         String dbName = "gpltniDy4M";
@@ -34,7 +45,7 @@ public class DatabaseManager {
         return dbHandle;
     }
 
-    public static boolean close(Connection handle) {
+    private boolean stopConnection(Connection handle) {
         try {
             handle.close();
         } catch (SQLException e) {
@@ -43,6 +54,16 @@ public class DatabaseManager {
         }
 
         return true;
+    }
+
+    public static Connection connect() {
+        DatabaseManager db = getInstance();
+        return db.initConnection();
+    }
+
+    public static boolean close(Connection handle) {
+        DatabaseManager db = getInstance();
+        return db.stopConnection(handle);
     }
 
 

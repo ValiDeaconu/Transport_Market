@@ -9,6 +9,9 @@ import org.transexpress.snap.service.UserReviewService;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
+@RequestMapping("api/v1/reviews")
+@RestController
 public class UserReviewController {
     private final UserReviewService userReviewService;
 

@@ -9,6 +9,9 @@ import org.transexpress.snap.service.JobPhotoService;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
+@RequestMapping("api/v1/photos")
+@RestController
 public class JobPhotoController {
     public final JobPhotoService jobPhotoService;
 

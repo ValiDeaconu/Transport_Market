@@ -9,6 +9,9 @@ import org.transexpress.snap.service.WalletService;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
+@RequestMapping("api/v1/wallet")
+@RestController
 public class WalletController {
     private final WalletService walletService;
 
@@ -24,14 +27,14 @@ public class WalletController {
 
 
     @GetMapping(path = "{id}")
-    public Wallet getOrderById(@PathVariable("id") int id) {
+    public Wallet getWalletById(@PathVariable("id") int id) {
         return walletService.getWalletByID(id).orElse(null);
     }
 
 
-    @GetMapping(path = "{id}")
-    public List<Wallet> getAllWalletsForUserID(@PathVariable("id") int id) {
-        return walletService.getAllWalletsForUserId(id);
+    @GetMapping
+    public List<Wallet> getAllWalletsForUserID() {
+        return null;//walletService.getAllWalletsForUserId(id);
     }
 
     @DeleteMapping(path = "{id}")

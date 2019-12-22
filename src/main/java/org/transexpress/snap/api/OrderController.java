@@ -12,6 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("api/v1/order")
+@RestController
 public class OrderController {
     private final OrderService orderService;
 
@@ -32,8 +33,8 @@ public class OrderController {
     }
 
 
-    @GetMapping(path = "{id}")
-    public List<Order> getAllOrdersForUserID(@PathVariable("id") int id) {
+    @GetMapping(path = "{orderId}")
+    public List<Order> getAllOrdersForUserID(@PathVariable("orderId") int id) {
         return orderService.getAllOrdersForUserId(id);
     }
 

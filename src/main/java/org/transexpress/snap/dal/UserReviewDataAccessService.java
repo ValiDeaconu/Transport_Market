@@ -1,24 +1,25 @@
 package org.transexpress.snap.dal;
 
+import org.springframework.stereotype.Repository;
 import org.transexpress.snap.misc.DatabaseManager;
-import org.transexpress.snap.model.Message;
-import org.transexpress.snap.model.UserReviews;
+import org.transexpress.snap.model.UserReview;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserReviewsDataAccessService implements UserReviewsDal {
+@Repository("mysql_user_reviews")
+public class UserReviewDataAccessService implements UserReviewDal {
 
     @Override
-    public int insertUserReview(UserReviews userReviews) {
+    public int insertUserReview(UserReview userReview) {
         Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
         try {
             Statement stmt = handle.createStatement();
             rowCount = stmt.executeUpdate("INSERT INTO `user_reviews` (description, rate, userId) " +
-                    "VALUES ('" + userReviews.getDescription() + "', '" + userReviews.getRate() + "', '" + userReviews.getUserId() + "');");
+                    "VALUES ('" + userReview.getDescription() + "', '" + userReview.getRate() + "', '" + userReview.getUserId() + "');");
 
             stmt.close();
         }
@@ -52,16 +53,16 @@ public class UserReviewsDataAccessService implements UserReviewsDal {
     }
 
     @Override
-    public int updateUserReviewByID(int id, UserReviews userReviews) {
+    public int updateUserReviewByID(int id, UserReview userReview) {
         Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
         try {
             Statement stmt = handle.createStatement();
             rowCount = stmt.executeUpdate("UPDATE user_reviews " +
-                    "SET description = '" + userReviews.getDescription() + "', " +
-                    "rate = '" + userReviews.getRate() + "', " +
-                    "userId = " + userReviews.getUserId() + " " +
+                    "SET description = '" + userReview.getDescription() + "', " +
+                    "rate = '" + userReview.getRate() + "', " +
+                    "userId = " + userReview.getUserId() + " " +
                     "WHERE id = " + id + ";");
 
             stmt.close();
@@ -76,8 +77,8 @@ public class UserReviewsDataAccessService implements UserReviewsDal {
     }
 
     @Override
-    public List<UserReviews> selectAllUserReviews() {
-        List<UserReviews> result = new ArrayList<>();
+    public List<UserReview> selectAllUserReviews() {
+        List<UserReview> result = new ArrayList<>();
 
         Connection handle = DatabaseManager.connect();
         try {
@@ -89,7 +90,7 @@ public class UserReviewsDataAccessService implements UserReviewsDal {
                 String description = rst.getString("description");
                 byte rate = rst.getByte("rate");
                 int userId = rst.getInt("userId");
-                result.add(new UserReviews(id, description, rate, userId));
+                result.add(new UserReview(id, description, rate, userId));
             }
 
             ps.close();

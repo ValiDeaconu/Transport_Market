@@ -1,25 +1,24 @@
 package org.transexpress.snap.dal;
 
+import org.springframework.stereotype.Repository;
 import org.transexpress.snap.misc.DatabaseManager;
-import org.transexpress.snap.model.JobPhotos;
-import org.transexpress.snap.model.Message;
-import org.transexpress.snap.model.Order;
+import org.transexpress.snap.model.JobPhoto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class JobPhotosDataAccessService implements JobPhotosDal {
+@Repository("mysql_job_photos")
+public class JobPhotoDataAccessService implements JobPhotoDal {
     @Override
-    public int insertJobPhotos(JobPhotos jobPhotos) {
+    public int insertJobPhoto(JobPhoto jobPhoto) {
         Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
         try {
             Statement stmt = handle.createStatement();
             rowCount = stmt.executeUpdate("INSERT INTO `job_photos` (link, jobId) " +
-                    "VALUES ('" + jobPhotos.getLink() + "', '" + jobPhotos.getJobId() + "');");
+                    "VALUES ('" + jobPhoto.getLink() + "', '" + jobPhoto.getJobId() + "');");
 
             stmt.close();
         }
@@ -33,7 +32,7 @@ public class JobPhotosDataAccessService implements JobPhotosDal {
     }
 
     @Override
-    public int deleteJobPhotos(int id) {
+    public int deleteJobPhoto(int id) {
         Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
@@ -53,8 +52,8 @@ public class JobPhotosDataAccessService implements JobPhotosDal {
     }
 
     @Override
-    public List<JobPhotos> selectAllJobPhotos() {
-        List<JobPhotos> result = new ArrayList<>();
+    public List<JobPhoto> selectAllJobPhotos() {
+        List<JobPhoto> result = new ArrayList<>();
 
         Connection handle = DatabaseManager.connect();
         try {
@@ -66,7 +65,7 @@ public class JobPhotosDataAccessService implements JobPhotosDal {
                 String link = rst.getString("link");
                 int jobId = rst.getInt("jobId");
 
-                result.add(new JobPhotos(id, link, jobId));
+                result.add(new JobPhoto(id, link, jobId));
             }
 
             ps.close();

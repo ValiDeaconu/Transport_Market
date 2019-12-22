@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 
-public class Wallets {
+public class Wallet {
     private final int id;
     @NotNull(message = "Please enter the balance")
     private final int balance;
@@ -12,9 +12,9 @@ public class Wallets {
     private final int userId;
 
 
-    public Wallets(@JsonProperty("id") int id,
-                   @JsonProperty("balance") int balance,
-                   @JsonProperty("userId") int userId) {
+    public Wallet(@JsonProperty("id") int id,
+                  @JsonProperty("balance") int balance,
+                  @JsonProperty("userId") int userId) {
         this.id = id;
         this.balance = balance;
         this.userId = userId;

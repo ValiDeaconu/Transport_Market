@@ -1,18 +1,19 @@
 package org.transexpress.snap.dal;
 
+import org.springframework.stereotype.Repository;
 import org.transexpress.snap.misc.DatabaseManager;
-import org.transexpress.snap.model.Order;
-import org.transexpress.snap.model.Wallets;
+import org.transexpress.snap.model.Wallet;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class WalletsDataAccessService implements WalletsDal {
+@Repository("mysql_wallets")
+public class WalletDataAccessService implements WalletDal {
 
     @Override
-    public int insertWallets(Wallets wallet) {
+    public int insertWallet(Wallet wallet) {
         Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;
@@ -33,21 +34,20 @@ public class WalletsDataAccessService implements WalletsDal {
     }
 
     @Override
-    public List<Wallets> selectAllWallets() {
-        List<Wallets> result = new ArrayList<>();
+    public List<Wallet> selectAllWallets() {
+        List<Wallet> result = new ArrayList<>();
 
         Connection handle = DatabaseManager.connect();
         try {
             PreparedStatement ps = handle.prepareStatement("SELECT * FROM wallets;");
             ResultSet rst = ps.executeQuery();
-            ResultSetMetaData rsmd = rst.getMetaData();
 
             while (rst.next()) {
                 int id = rst.getInt("id");
                 int balance = rst.getInt("balance");
                 int userId = rst.getInt("userId");
 
-                result.add(new Wallets(id,
+                result.add(new Wallet(id,
                         balance,
                         userId));
             }
@@ -64,9 +64,9 @@ public class WalletsDataAccessService implements WalletsDal {
     }
 
     @Override
-    public Optional<Wallets> selectWalletByID(int id) {
+    public Optional<Wallet> selectWalletByID(int id) {
         Connection handle = DatabaseManager.connect();
-        Optional<Wallets> result = Optional.empty();
+        Optional<Wallet> result = Optional.empty();
         try {
             PreparedStatement ps = handle.prepareStatement("SELECT * FROM wallets WHERE id = " + id + ";");
             ResultSet rst = ps.executeQuery();
@@ -75,7 +75,7 @@ public class WalletsDataAccessService implements WalletsDal {
                 int balance = rst.getInt("balance");
                 int userId = rst.getInt("userId");
 
-                result = Optional.of(new Wallets(id,
+                result = Optional.of(new Wallet(id,
                         balance,
                         userId));
             }
@@ -112,7 +112,7 @@ public class WalletsDataAccessService implements WalletsDal {
     }
 
     @Override
-    public int updateWallet(int id, Wallets wallet) {
+    public int updateWallet(int id, Wallet wallet) {
         Connection handle = DatabaseManager.connect();
 
         int rowCount = 0;

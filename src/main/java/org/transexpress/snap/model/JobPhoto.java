@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import javax.validation.constraints.NotNull;
 
-public class JobPhotos {
+public class JobPhoto {
     private final int id;
     @NotNull(message = "Please enter the link")
     private final String link;
@@ -13,9 +13,9 @@ public class JobPhotos {
     private final int jobId;
 
 
-    public JobPhotos(@JsonProperty("id") int id,
-                      @JsonProperty("link") String link,
-                      @JsonProperty("jobId") int jobId
+    public JobPhoto(@JsonProperty("id") int id,
+                    @JsonProperty("link") String link,
+                    @JsonProperty("jobId") int jobId
                       ) {
         this.id = id;
         this.link = link;

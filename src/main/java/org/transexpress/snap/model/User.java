@@ -2,7 +2,6 @@ package org.transexpress.snap.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.transexpress.snap.misc.Checker;
-import org.transexpress.snap.misc.Formatter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

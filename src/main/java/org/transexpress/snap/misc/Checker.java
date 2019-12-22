@@ -28,7 +28,7 @@ public class Checker {
      * @return true if text is empty
      */
     public boolean isEmpty(String text) {
-        return text != null && !isEmpty(text) && text.equals("");
+        return text != null && text.equals("");
     }
 
     /**

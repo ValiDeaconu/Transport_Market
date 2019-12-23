@@ -48,7 +48,15 @@ CREATE TABLE IF NOT EXISTS `transport_market`.`jobs` (
   `departureDate` TIMESTAMP NOT NULL DEFAULT '2019-12-15 00:00:00.0000',
   `arrivalDate` TIMESTAMP NOT NULL DEFAULT '2019-12-15 00:00:00.0000',
   `sale` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`))
+  `ownerId` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  INDEX `FK2_USERS_4_idx` (`ownerId` ASC),
+  CONSTRAINT `FK2_USERS_4`
+    FOREIGN KEY (`ownerId`)
+    REFERENCES `transport_market`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 SHOW WARNINGS;

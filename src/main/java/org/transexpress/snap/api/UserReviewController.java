@@ -26,8 +26,8 @@ public class UserReviewController {
     }
 
     @GetMapping(path = "{id}")
-    public List<UserReview> getUserReviewsByID(@PathVariable("id") int id) {
-        return userReviewService.getAllUserReviews(id);
+    public List<UserReview> getUserReviewsForUserID(@PathVariable("id") int userId) {
+        return userReviewService.getAllUserReviewsForUserId(userId);
     }
 
     @DeleteMapping(path = "{id}")

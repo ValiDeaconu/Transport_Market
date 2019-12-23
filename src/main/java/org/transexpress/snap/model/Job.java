@@ -23,6 +23,8 @@ public class Job {
     private final String arrivalDate;
     @NotBlank(message = "Please enter sale")
     private final int sale;
+    @NotBlank(message = "Please insert ownerId")
+    private final int ownerId;
 
 
     public Job(@JsonProperty("id")int id,
@@ -33,7 +35,8 @@ public class Job {
                @JsonProperty("postDate") String postDate,
                @JsonProperty("departureDate") String departureDate,
                @JsonProperty("arrivalDate") String arrivalDate,
-               @JsonProperty("sale") int sale) {
+               @JsonProperty("sale") int sale,
+               @JsonProperty("ownerId") int ownerId) {
         this.id = id;
         this.description = description;
         this.price = price;
@@ -43,6 +46,7 @@ public class Job {
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
         this.sale = sale;
+        this.ownerId = ownerId;
     }
 
     public int getId() {
@@ -80,4 +84,6 @@ public class Job {
     public int getSale() {
         return sale;
     }
+
+    public int getOwnerId() { return ownerId; }
 }

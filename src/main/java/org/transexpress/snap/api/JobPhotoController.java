@@ -31,8 +31,8 @@ public class JobPhotoController {
     }
 
     @GetMapping(path = "{id}")
-    public List<JobPhoto> getAllJobPhotos(int jobId) {
-        return jobPhotoService.getAllJobPhotos(jobId);
+    public List<JobPhoto> getAllJobPhotos(@PathVariable("id") int jobId) {
+        return jobPhotoService.getAllJobPhotosForJobId(jobId);
     }
 
 }

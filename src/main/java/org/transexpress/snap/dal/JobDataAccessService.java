@@ -20,9 +20,9 @@ public class JobDataAccessService implements JobDal {
         int rowCount = 0;
         try {
             Statement stmt = handle.createStatement();
-            rowCount = stmt.executeUpdate("INSERT INTO `jobs` (description, price, route, tags, postDate, departureDate, arrivalDate, sale) " +
+            rowCount = stmt.executeUpdate("INSERT INTO `jobs` (description, price, route, tags, postDate, departureDate, arrivalDate, sale, ownerId) " +
                     "VALUES ('" + job.getDescription() + "', MD5('" + job.getPrice() + "'), '" + job.getRoute() + "', '" + job.getTags() + "', " +
-                    "'" + job.getPostDate() + "', '" + job.getDepartureDate() + "', " + job.getArrivalDate() + ", " + job.getSale() + ");");
+                    "'" + job.getPostDate() + "', '" + job.getDepartureDate() + "', " + job.getArrivalDate() + ", " + job.getSale() + ", " + job.getOwnerId() + ");");
 
             stmt.close();
         }
@@ -54,6 +54,7 @@ public class JobDataAccessService implements JobDal {
                 String departureDate = rst.getString("departureDate");
                 String arrivalDate = rst.getString("arrivalDate");
                 int sale = rst.getInt("sale");
+                int ownerId = rst.getInt("ownerId");
 
                 result.add(new Job(id,
                         description,
@@ -63,7 +64,8 @@ public class JobDataAccessService implements JobDal {
                         postDate,
                         departureDate,
                         arrivalDate,
-                        sale));
+                        sale,
+                        ownerId));
             }
 
             ps.close();
@@ -95,6 +97,7 @@ public class JobDataAccessService implements JobDal {
                 String departureDate = rst.getString("departureDate");
                 String arrivalDate = rst.getString("arrivalDate");
                 int sale = rst.getInt("sale");
+                int ownerId = rst.getInt("ownerId");
 
                 result = Optional.of(new Job(id,
                         description,
@@ -104,7 +107,8 @@ public class JobDataAccessService implements JobDal {
                         postDate,
                         departureDate,
                         arrivalDate,
-                        sale));
+                        sale,
+                        ownerId));
             }
 
             ps.close();
@@ -154,6 +158,7 @@ public class JobDataAccessService implements JobDal {
                     ", departureDate = '" + job.getDepartureDate() + "'" +
                     ", arrivalDate = '" + job.getArrivalDate() + "'" +
                     ", sale = " + job.getSale() +
+                    ", ownerId = " + job.getOwnerId() +
                     " WHERE id =" + id + ";");
 
             stmt.close();

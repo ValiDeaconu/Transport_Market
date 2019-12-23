@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.JobPhotoDal;
 import org.transexpress.snap.model.JobPhoto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +25,16 @@ public class JobPhotoService {
         return jobPhotoDal.deleteJobPhoto(id);
     }
 
-    public List<JobPhoto> getAllJobPhotos(int jobId){
-        List<JobPhoto> allJobPhotos= jobPhotoDal.selectAllJobPhotos();
+    public List<JobPhoto> getAllJobPhotosForJobId(int jobId){
+        List<JobPhoto> allJobPhotos = jobPhotoDal.selectAllJobPhotos();
+
+        if (allJobPhotos == null)
+            return new ArrayList<>();
 
         List<JobPhoto> result = allJobPhotos.stream()
                 .filter(o -> o.getJobId() == jobId)
                 .collect(Collectors.toList());
+
         return result;
     }
 }

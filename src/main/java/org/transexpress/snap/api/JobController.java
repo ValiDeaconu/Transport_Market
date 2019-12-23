@@ -3,7 +3,12 @@ package org.transexpress.snap.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.transexpress.snap.misc.Cvadruple;
+import org.transexpress.snap.misc.Pair;
+import org.transexpress.snap.misc.Tuple;
 import org.transexpress.snap.model.Job;
+import org.transexpress.snap.model.JobPhoto;
+import org.transexpress.snap.model.User;
 import org.transexpress.snap.service.JobService;
 
 import javax.validation.Valid;
@@ -25,7 +30,7 @@ public class JobController {
     }
 
     @GetMapping
-    public List<Job> getAllJobs() {
+    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobs() {
         return jobService.getAllJobs();
     }
 

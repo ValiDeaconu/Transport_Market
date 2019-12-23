@@ -94,4 +94,28 @@ public class Checker {
         return text != null && !isEmpty(text) && text.matches("(https?|ftp|file):\\/\\/[-a-zA-Z0-9+&@#\\/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#\\/%=~_|]");
     }
 
+    /**
+     * Checks if two dates are in the same day
+     * @param date1 first date
+     * @param date2 second date
+     * @return true if dates are in the same day
+     */
+    public boolean isSameDay(String date1, String date2) {
+        // date example: 2019-12-26 10:00:00
+        return date1.substring(0, 10).equals(date2.substring(0, 10));
+    }
+
+    /**
+     * Checks if a tag can be found in a tag list
+     * @param tagList list of tags
+     * @param tag tag to check
+     * @return true if tagList contains tag
+     */
+    public boolean tagListContainsTag(String tagList, String tag) {
+        for (String insideTag : tagList.split(";"))
+            if (insideTag.equals(tag))
+                return true;
+
+        return false;
+    }
 }

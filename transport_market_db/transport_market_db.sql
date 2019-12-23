@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS `transport_market`.`jobs` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `transport_market`.`jobs` (
-  `id` INT NOT NULL DEFAULT 1,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `description` TEXT NOT NULL,
   `price` INT NOT NULL DEFAULT 0,
   `route` TEXT NOT NULL,
@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS `transport_market`.`job_photos` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `transport_market`.`job_photos` (
-  `id` INT NOT NULL DEFAULT 1,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `link` VARCHAR(512) NOT NULL,
   `jobId` INT NOT NULL,
   PRIMARY KEY (`id`),

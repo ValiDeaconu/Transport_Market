@@ -3,7 +3,9 @@ package org.transexpress.snap.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.transexpress.snap.dal.JobDal;
+import org.transexpress.snap.misc.Checker;
 import org.transexpress.snap.misc.Cvadruple;
 import org.transexpress.snap.model.Job;
 import org.transexpress.snap.model.JobPhoto;
@@ -12,6 +14,7 @@ import org.transexpress.snap.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JobService {
@@ -54,6 +57,43 @@ public class JobService {
 
         return result;
     }
+
+    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllFilteredJobs(String date,
+                                                                                int minPrice,
+                                                                                int maxPrice,
+                                                                                String transportTag) {
+        List<Job> jobs = jobDal.selectAllJobs();
+
+        List<Job> filteredJobs = jobs.stream()
+                .filter(job -> {
+                    boolean ok = true;
+
+                    if (!date.equals("__empty__"))
+                        ok = Checker.getInstance().isSameDay(date, job.getDepartureDate());
+
+                    ok = ok && job.getPrice() >= minPrice;
+                    ok = ok && job.getPrice() <= maxPrice;
+
+                    if (!transportTag.equals("__empty__"))
+                        ok = ok && Checker.getInstance().tagListContainsTag(job.getTags(), transportTag);
+
+                    return ok;
+                })
+                .collect(Collectors.toList());
+
+        List<Cvadruple<Job, User, Float, List<JobPhoto>>> result = new ArrayList<>();
+
+        for (Job job : filteredJobs) {
+            Optional<User> user = userService.getUserByID(job.getOwnerId());
+            float userRate = userReviewService.getAverageRateForUserId(job.getOwnerId());
+            List<JobPhoto> jobPhotos = jobPhotoService.getAllJobPhotosForJobId(job.getId());
+
+            user.ifPresent(value -> result.add(new Cvadruple<>(job, value, userRate, jobPhotos)));
+        }
+
+        return result;
+    }
+
 
     public Optional<Job> getJobByID(int id) {
 

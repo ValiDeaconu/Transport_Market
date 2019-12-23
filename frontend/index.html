@@ -73,90 +73,6 @@
 					</section>
 
 				<!-- Main -->
-					<script>
-					function parseDate(date) {
-						var d = new Date(date);
-						const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-						const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-						return days[d.getDay()] + ", " + d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear() + ", " + d.getHours() + ":" + d.getMinutes();
-					}
-
-					function listJob(cvadruple) {
-						var job = cvadruple.first;
-						var user = cvadruple.second;
-						var userRate = cvadruple.third;
-						var photos = cvadruple.fourth;
-
-						if (photos.length == 0) {
-							photos.push("images/exemple_car.jpg");
-						}
-
-						var routeList = job.route.split(";");
-						var startingLocation = routeList[0]
-						var destination = routeList[routeList.length - 1];
-
-						var others = "";
-						if (routeList.length - 2 > 0) {
-							for (var i = 1; i < routeList.length - 1; ++i) {
-								others += routeList[i] + ", ";
-							}
-							others = others.substring(0, others.length - 2);
-						}
-						
-						var html = "<article class='post'>" +
-							"<header>" + 
-								"<div class='title'>" +
-									"<h2><a href='todolink.html?jobid=" + job.id + "'>" + startingLocation + " -> " + destination + "</a></h2>" +
-									"<p>" + others + "<p>" +
-								"</div>" +
-								"<div class='meta'>" +
-									"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
-									"<a href='#' class='author'>" + 
-										"<span class='name'>" + user.username + "</span>" + 
-										"<img src='" + user.profilePictureLink + "' alt='' width='50px' height='50px'/>" + 
-									"</a>" +
-								"</div>" +
-							"</header>" +
-							"<a href='todolink.html?jobid=" + job.id + "' class='image featured'>" +
-								"<img src='" + photos[0].link + "' alt='' width='100%' height='350px'/>" + 
-							"</a>" +
-							"<p>" + job.description.substring(0, (job.description.length > 300 ? 300 : job.description.length)) + "</p>" +
-							"<footer>" +
-								"<ul class='actions'>" +
-									"<li><a href='todolink.html?jobid=" + job.id + "' class='button large'>See offer</a></li>" +
-								"</ul>" + 
-								"<ul class='stats'>" +
-									"<li><a href='#'>" + job.tags.split(";")[0] + "</a></li>" +
-									"<li><a href='#' class='icon solid fa-star'>" + userRate + "</a></li>" +
-								"</ul>" +
-							"</footer>" +
-						"</article>";
-
-						return html;
-					}
-
-					function updateHtml(item, index) {
-						document.getElementById("main_posts").innerHTML += listJob(item);
-					}
-
-					const xhr = new XMLHttpRequest();
-
-					xhr.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							if (Object.keys(this.responseText).length == 0) {
-								document.getElementById("main").innerHTML = "<h2>Empty database.</h2>";	
-							} else {
-								var obj = JSON.parse(this.responseText);
-								obj.forEach(updateHtml);
-							}
-						}
-					}
-
-					xhr.open('get', 'http://localhost:8080/api/v1/job', true);
-					xhr.send();
-					</script>
-
 					<div id="main">
 						<div id="main_posts">
 
@@ -164,8 +80,8 @@
 
 						<!-- Pagination -->
 						<ul class="actions pagination">
-							<li><a href="" class="disabled button large previous">Previous Page</a></li>
-							<li><a href="#" class="button large next">Next Page</a></li>
+							<li><a id="pagination_prev_button" class="disabled button large previous" onclick="prevPagePressed()">Previous Page</a></li>
+							<li><a id="pagination_next_button" class="disabled button large next" onclick="nextPagePressed()">Next Page</a></li>
 						</ul>
 					</div>
 
@@ -185,41 +101,39 @@
 								<div class="mini-posts">
 									<div class="col-6 col-12-medium">
 										<h4>Filter by</h4>
-										
-										<form method="post" action="#">
-											<ul class="alt">
-												<li>
-													<a href="#" class="button icon fit fa-calendar">Availabilty</a>
-												</li>
-												<li>
-													<div class="row gtr-uniform">
-														<div class="col-6 col-12-xsmall">
-															<input type="text" name="demo-price-min" id="demo-price-min" value="" placeholder="Min. price" />
-														</div>
-														<div class="col-6 col-12-xsmall">
-															<input type="text" name="demo-price-max" id="demo-price-max" value="" placeholder="Max. price" />
-														</div>
+									
+										<ul class="alt">
+											<li>
+												<input type="date" name="filter-calendar" id="filter-calendar" class="button icon fit fa-calendar" />
+											</li>
+											<li>
+												<div class="row gtr-uniform">
+													<div class="col-6 col-12-xsmall">
+														<input type="number" name="filter-price-min" id="filter-price-min" min="0" max="30000" value="" placeholder="Min. price" />
 													</div>
-												</li>
-												<li>
-													<div class="col-12">
-														<select name="demo-type" id="demo-type">
-															<option value="">- Transport Type -</option>
-															<option value="1">Carpool</option>
-															<option value="1">Ride share</option>
-															<option value="1">Freight transport</option>
-														</select>
+													<div class="col-6 col-12-xsmall">
+														<input type="number" name="filter-price-max" id="filter-price-max" min="0" max="30000" value="" placeholder="Max. price" />
 													</div>
-												</li>
-												<li>
-													<div class="col-12">
-														<ul class="actions">
-															<li><input type="submit" value="Filter" /></li>
-														</ul>
-													</div>
-												</li>
-											</ul>
-										</form>
+												</div>
+											</li>
+											<li>
+												<div class="col-12">
+													<select name="filter-type" id="filter-type">
+														<option value="0">- Transport Type -</option>
+														<option value="1">Carpooling</option>
+														<option value="2">Ride-sharing</option>
+														<option value="3">Freight transport</option>
+													</select>
+												</div>
+											</li>
+											<li>
+												<div class="col-12">
+													<ul class="actions">
+														<li><input type="submit" value="Filter" class="button fit" onclick="filterResults()" /></li>
+													</ul>
+												</div>
+											</li>
+										</ul>
 									</div>
 <!-- Mini posts
 										<article class="mini-post">
@@ -338,6 +252,7 @@
 			</div>
 
 		<!-- Scripts -->
+			<script src="script/mainpage.js"></script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>

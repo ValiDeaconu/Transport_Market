@@ -8,6 +8,7 @@ import org.transexpress.snap.misc.Pair;
 import org.transexpress.snap.misc.Tuple;
 import org.transexpress.snap.model.Job;
 import org.transexpress.snap.model.JobPhoto;
+import org.transexpress.snap.model.Message;
 import org.transexpress.snap.model.User;
 import org.transexpress.snap.service.JobService;
 
@@ -32,6 +33,14 @@ public class JobController {
     @GetMapping
     public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobs() {
         return jobService.getAllJobs();
+    }
+
+    @GetMapping(path = "{date}/{min-price}/{max-price}/{transport-tag}")
+    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllFilteredJobs(@PathVariable("date") String date,
+                                                                                @PathVariable("min-price") int minPrice,
+                                                                                @PathVariable("max-price") int maxPrice,
+                                                                                @PathVariable("transport-tag") String transportTag) {
+        return jobService.getAllFilteredJobs(date, minPrice, maxPrice, transportTag);
     }
 
     @GetMapping(path = "{id}")

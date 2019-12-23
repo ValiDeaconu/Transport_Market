@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `transport_market`.`users` (
   `phone` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `description` VARCHAR(45) NOT NULL,
-  `profile_picture_link` VARCHAR(45) NOT NULL,
+  `profile_picture_link` VARCHAR(512) NOT NULL,
   `isProvider` TINYINT(1) NOT NULL DEFAULT False,
   `isAdmin` TINYINT(1) NOT NULL DEFAULT False,
   PRIMARY KEY (`id`),
@@ -69,7 +69,7 @@ DROP TABLE IF EXISTS `transport_market`.`job_photos` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `transport_market`.`job_photos` (
   `id` INT NOT NULL DEFAULT 1,
-  `link` VARCHAR(45) NOT NULL,
+  `link` VARCHAR(512) NOT NULL,
   `jobId` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),

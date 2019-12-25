@@ -35,6 +35,11 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
+    @GetMapping(path = "jobsForUserId/{userId}")
+    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobsForUserId(@PathVariable("userId")int id) {
+        return jobService.getAllJobsForUserId(id);
+    }
+
     @GetMapping(path = "{date}/{min-price}/{max-price}/{transport-tag}")
     public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllFilteredJobs(@PathVariable("date") String date,
                                                                                 @PathVariable("min-price") int minPrice,

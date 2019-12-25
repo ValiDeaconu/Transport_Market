@@ -82,6 +82,52 @@ public class JobDataAccessService implements JobDal {
     }
 
     @Override
+    public List<Job> selectAllJobsForUserId(int id) {
+        List<Job> result = new ArrayList<>();
+
+        Connection handle = DatabaseManager.connect();
+        try {
+            PreparedStatement ps = handle.prepareStatement("SELECT * FROM jobs WHERE ownerId = " + id + ";");
+            ResultSet rst = ps.executeQuery();
+            ResultSetMetaData rsmd = rst.getMetaData();
+
+            while (rst.next()) {
+                int jobId = rst.getInt("id");
+                String description = rst.getString("description");
+                int price = rst.getInt("price");
+                String route = rst.getString("route");
+                String tags = rst.getString("tags");
+                String postDate = rst.getString("postDate");
+                String departureDate = rst.getString("departureDate");
+                String arrivalDate = rst.getString("arrivalDate");
+                int sale = rst.getInt("sale");
+
+                result.add(new Job(id,
+                        description,
+                        price,
+                        route,
+                        tags,
+                        postDate,
+                        departureDate,
+                        arrivalDate,
+                        sale,
+                        id));
+            }
+
+            ps.close();
+            rst.close();
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex);
+        } catch (Exception e) {
+            System.err.println("Exception: " + e);
+        }
+
+        DatabaseManager.close(handle);
+
+        return (result.size() == 0) ? null : result;
+    }
+
+    @Override
     public Optional<Job> selectJobByID(int id) {
         Connection handle = DatabaseManager.connect();
         Optional<Job> result = Optional.empty();

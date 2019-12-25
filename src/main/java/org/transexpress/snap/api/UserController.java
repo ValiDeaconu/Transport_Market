@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import org.transexpress.snap.misc.Pair;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.User;
 import org.transexpress.snap.model.UserReview;
 import org.transexpress.snap.service.UserService;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@Valid @NonNull @RequestBody User user) {
-        userService.addUser(user);
+    public ResponseMessage addUser(@Valid @NonNull @RequestBody User user) {
+        return userService.addUser(user);
     }
 
     @GetMapping
@@ -32,13 +33,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path = "{username}/{password}")
+    public User verifyUser(@PathVariable("username") String username,
+                           @PathVariable("password") String password) {
+        return userService.verifyUser(username, password).orElse(null);
+    }
+
     @GetMapping(path = "{id}")
     public User getUserByID(@PathVariable("id") int id) {
         return userService.getUserByID(id).orElse(null);
     }
 
-    @GetMapping(path = "{view_profile_id}")
-    public Pair<User, List<UserReview>> getUserViewProfile(@PathVariable("view_profle_id") int id) {
+    @GetMapping(path = "reviews/{id}")
+    public Pair<User, List<UserReview>> getUserViewProfile(@PathVariable("id") int id) {
         return userService.getUserViewProfile(id);
     }
 

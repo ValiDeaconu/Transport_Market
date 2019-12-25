@@ -7,9 +7,11 @@ import org.transexpress.snap.dal.UserDal;
 import org.transexpress.snap.misc.Checker;
 import org.transexpress.snap.misc.Formatter;
 import org.transexpress.snap.misc.Pair;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.User;
 import org.transexpress.snap.model.UserReview;
 
+import java.text.Format;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +30,16 @@ public class UserService {
         this.userReviewService = userReviewService;
     }
 
-    public int addUser(User user) {
+    public ResponseMessage addUser(User user) {
         if (!user.isWellFormed())
-            return -1;
+            return new ResponseMessage("User is not well formed.");
 
         User bracedUser = braceUser(user);
 
-        return userDal.insertUser(bracedUser);
+        if (userDal.insertUser(bracedUser) != 1)
+            return new ResponseMessage("User could not be written into the database.");
+
+        return new ResponseMessage("User was successfully written into database.", 0);
     }
 
     public List<User> getAllUsers() {
@@ -47,13 +52,11 @@ public class UserService {
         return userDal.selectUserByID(id);
     }
 
-    public Pair<User, List<UserReview>> getUserViewProfile(int id){
-        if (!Checker.getInstance().checkId(id))
-            return null;
-        Optional<User> userOpt = userDal.selectUserByID(id);
-        if (!userOpt.isPresent())
-            return null;
-        return new Pair<User, List <UserReview>>(userOpt.get(), userReviewService.getAllUserReviewsForUserId(id));
+        public Optional<User> verifyUser(String username, String password) {
+        String bracedUsername = Formatter.getInstance().secureQuotes(username);
+        String bracedPassword = Formatter.getInstance().secureQuotes(password);
+
+        return userDal.selectUserByUsernameAndPassword(username, password);
     }
 
     public int deleteUser(int id) {
@@ -90,4 +93,12 @@ public class UserService {
                 user.isAdmin());
     }
 
+    public Pair<User, List<UserReview>> getUserViewProfile(int id) {
+        if (!Checker.getInstance().checkId(id))
+            return null;
+        Optional<User> userOpt = userDal.selectUserByID(id);
+        if (!userOpt.isPresent())
+            return null;
+        return new Pair<User, List<UserReview>>(userOpt.get(), userReviewService.getAllUserReviewsForUserId(id));
+    }
 }

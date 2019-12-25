@@ -13,6 +13,8 @@ public interface UserDal {
 
     Optional<User> selectUserByID(int id);
 
+    Optional<User> selectUserByUsernameAndPassword(String username, String password);
+
     int deleteUserByID(int id);
 
     int updateUserByID(int id, User user);

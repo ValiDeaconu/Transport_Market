@@ -123,6 +123,49 @@ public class UserDataAccessService implements UserDal {
     }
 
     @Override
+    public Optional<User> selectUserByUsernameAndPassword(String username, String password) {
+        Connection handle = DatabaseManager.connect();
+        Optional<User> result = Optional.empty();
+        try {
+            PreparedStatement ps = handle.prepareStatement("SELECT * FROM users " +
+                    "WHERE username = '" + username + "' " +
+                    "AND password = MD5('" + password + "');");
+            ResultSet rst = ps.executeQuery();
+
+            if (rst.next()) {
+                int id = rst.getInt("id");
+                String dbusername = rst.getString("username");
+                String md5password = rst.getString("password");
+                String phone = rst.getString("phone");
+                String email = rst.getString("email");
+                String description = rst.getString("description");
+                String profile_picture_link = rst.getString("profile_picture_link");
+                boolean isProvider = rst.getBoolean("isProvider");
+                boolean isAdmin = rst.getBoolean("isAdmin");
+
+                result = Optional.of(new User(id,
+                        dbusername,
+                        md5password,
+                        phone,
+                        email,
+                        description,
+                        profile_picture_link,
+                        isProvider,
+                        isAdmin));
+            }
+
+            ps.close();
+            rst.close();
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex);
+        }
+
+        DatabaseManager.close(handle);
+
+        return result.equals(Optional.empty()) ? Optional.empty() : result;
+    }
+
+    @Override
     public int deleteUserByID(int id) {
         Connection handle = DatabaseManager.connect();
 

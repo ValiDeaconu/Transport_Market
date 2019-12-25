@@ -35,8 +35,8 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
-    @GetMapping
-    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobsForUserId(int id) {
+    @GetMapping(path = "jobsForUserId/{userId}")
+    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobsForUserId(@PathVariable("userId")int id) {
         return jobService.getAllJobsForUserId(id);
     }
 

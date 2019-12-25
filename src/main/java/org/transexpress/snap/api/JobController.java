@@ -44,8 +44,8 @@ public class JobController {
     }
 
     @GetMapping(path = "{id}")
-    public Job getJobByID(@PathVariable("id") int id) {
-        return jobService.getJobByID(id).orElse(null);
+    public Cvadruple<Job, User, Float, List<JobPhoto>> getJobByID(@PathVariable("id") int id) {
+        return jobService.getJobByID(id);
     }
 
     @DeleteMapping(path = "{id}")

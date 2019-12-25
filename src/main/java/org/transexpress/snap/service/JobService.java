@@ -3,7 +3,6 @@ package org.transexpress.snap.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.transexpress.snap.dal.JobDal;
 import org.transexpress.snap.misc.Checker;
 import org.transexpress.snap.misc.Cvadruple;
@@ -14,6 +13,7 @@ import org.transexpress.snap.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,9 +95,23 @@ public class JobService {
     }
 
 
-    public Optional<Job> getJobByID(int id) {
+    public Cvadruple<Job, User, Float, List<JobPhoto>> getJobByID(int id) {
+        Optional<Job> jobOpt = jobDal.selectJobByID(id);
+        Job job;
+        if (jobOpt.isPresent()){
+            job = jobOpt.get();
+        } else { return null; }
 
-        return jobDal.selectJobByID(id);
+        Cvadruple<Job, User, Float, List<JobPhoto>> result;
+
+        Optional<User> user = userService.getUserByID(job.getOwnerId());
+        float userRate = userReviewService.getAverageRateForUserId(job.getOwnerId());
+        List<JobPhoto> jobPhotos = jobPhotoService.getAllJobPhotosForJobId(job.getId());
+        if (user.isPresent()){
+            result = new Cvadruple<Job, User, Float, List<JobPhoto>>(job, user.get(), userRate, jobPhotos);
+            return result;
+        } else return null;
+
     }
 
     public int deleteJob(int id) {

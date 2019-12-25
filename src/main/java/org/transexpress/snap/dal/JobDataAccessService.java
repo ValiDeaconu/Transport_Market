@@ -86,7 +86,7 @@ public class JobDataAccessService implements JobDal {
         Connection handle = DatabaseManager.connect();
         Optional<Job> result = Optional.empty();
         try {
-            PreparedStatement ps = handle.prepareStatement("SELECT FROM jobs WHERE id = " + id + ";");
+            PreparedStatement ps = handle.prepareStatement("SELECT * FROM jobs WHERE id = " + id + ";");
             ResultSet rst = ps.executeQuery();
             ResultSetMetaData rsmd = rst.getMetaData();
 

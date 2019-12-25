@@ -1,5 +1,3 @@
-const SERVER_LINK = 'http://localhost:8080';
-
 function parseDate(date) {
 	var d = new Date(date);
 	const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -32,7 +30,7 @@ function listJob(cvadruple) {
 	var html = "<article class='post'>" +
 		"<header>" + 
 			"<div class='title'>" +
-				"<h2><a href='todolink.html?jobid=" + job.id + "'>" + startingLocation + " -> " + destination + "</a></h2>" +
+				"<h2><a href='jobOffer.php?jobId=" + job.id + "'>" + startingLocation + " -> " + destination + "</a></h2>" +
 				"<p>" + others + "<p>" +
 			"</div>" +
 			"<div class='meta'>" +
@@ -43,13 +41,13 @@ function listJob(cvadruple) {
 				"</a>" +
 			"</div>" +
 		"</header>" +
-		"<a href='todolink.html?jobid=" + job.id + "' class='image featured'>" +
+		"<a href='jobOffer.php?jobId=" + job.id + "' class='image featured'>" +
 			"<img src='" + photos[0].link + "' alt='' width='100%' height='350px'/>" + 
 		"</a>" +
 		"<p>" + job.description.substring(0, (job.description.length > 300 ? 300 : job.description.length)) + "</p>" +
 		"<footer>" +
 			"<ul class='actions'>" +
-				"<li><a href='todolink.html?jobid=" + job.id + "' class='button large'>See offer</a></li>" +
+				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>See offer</a></li>" +
 			"</ul>" + 
 			"<ul class='stats'>" +
 				"<li><a href='#'>" + job.tags.split(";")[0] + "</a></li>" +

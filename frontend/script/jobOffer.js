@@ -1,6 +1,9 @@
-const SERVER_LINK = 'http://localhost:8080';
-var jobId = window.location.hash.substring(1,  window.location.hash.length);
-console.log(jobId);
+
+//var jobId = window.location.hash.substring(1,  window.location.hash.length);
+
+const urlParams = new URLSearchParams(window.location.search);
+var jobId = urlParams.get("jobId")
+
 var job = [];
 
 function parseDate(date) {
@@ -13,19 +16,21 @@ function parseDate(date) {
 function listJobRoute(cvadruple){
     var job = cvadruple.first;
     var routeList = job.route.split(";");
-    var html = "<header style=" + "padding:20px" + ">" +
-               "<table style=" + "width:100%" + ">" +
-               "<tr>" +
-               "<th>Opriri</th>" +
-               "</tr>";              ;
+	
+	var html = 	"<table style='width:100%'>" +
+				"<tr>" +
+					"<th>Opriri</th>" +
+				"</tr>";
+
     for (var i = 1; i < routeList.length - 1; i++){
         html += "<tr>" +
-                "<td>" + routeList[i] + "</td>" + 
-                +"</tr>";
-    }
-    html += "</table>" +
-            "</header>";
-    return html;
+					"<td>" + routeList[i] + "</td>" + 
+                "</tr>";
+	}
+	
+    html += "</table>";
+	
+	return html;
 }
 
 function listJobDetails(cvadruple) {
@@ -35,6 +40,7 @@ function listJobDetails(cvadruple) {
 	var photos = cvadruple.fourth;
 
 	if (photos.length == 0) {
+		photos = [];
 		photos.push("images/exemple_car.jpg");
 	}
 
@@ -53,7 +59,7 @@ function listJobDetails(cvadruple) {
 	var html = "<article class='post'>" +
 		"<header>" + 
 			"<div class='title'>" +
-				"<h2><a href='todolink.html?jobid=" + job.id + "'>" + startingLocation + " -> " + destination + "</a></h2>" +
+				"<h2>" + startingLocation + " -> " + destination + "</h2>" +
 			"</div>" +
 			"<div class='meta'>" +
 				"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
@@ -63,7 +69,7 @@ function listJobDetails(cvadruple) {
 				"</a>" +
 			"</div>" +
 		"</header>" +
-		"<a href='todolink.html?jobid=" + job.id + "' class='image featured'>" +
+		"<a class='image featured'>" +
 			"<img src='" + photos[0].link + "' alt='' width='100%' height='350px'/>" + 
 		"</a>" +
 		"<table style=" +"width:100%" + ">" +
@@ -103,8 +109,8 @@ function clearHtml() {
 }
 
 function updateHtml(item) {
-	document.getElementById("job_post").innerHTML += listJobDetails(item);
-    document.getElementById("job_route").innerHTML += listJobRoute(item);
+	document.getElementById("job_post").innerHTML = listJobDetails(item);
+    document.getElementById("job_route").innerHTML = listJobRoute(item);
 }
 
 

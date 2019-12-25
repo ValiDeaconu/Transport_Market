@@ -3,6 +3,7 @@ package org.transexpress.snap.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.User;
 import org.transexpress.snap.service.UserService;
 
@@ -21,13 +22,19 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@Valid @NonNull @RequestBody User user) {
-        userService.addUser(user);
+    public ResponseMessage addUser(@Valid @NonNull @RequestBody User user) {
+        return userService.addUser(user);
     }
 
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @GetMapping(path = "{username}/{password}")
+    public User verifyUser(@PathVariable("username") String username,
+                           @PathVariable("password") String password) {
+        return userService.verifyUser(username, password).orElse(null);
     }
 
     @GetMapping(path = "{id}")

@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.UserDal;
 import org.transexpress.snap.misc.Checker;
 import org.transexpress.snap.misc.Formatter;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.User;
 
+import java.text.Format;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +23,16 @@ public class UserService {
         this.userDal = userDal;
     }
 
-    public int addUser(User user) {
+    public ResponseMessage addUser(User user) {
         if (!user.isWellFormed())
-            return -1;
+            return new ResponseMessage("User is not well formed.");
 
         User bracedUser = braceUser(user);
 
-        return userDal.insertUser(bracedUser);
+        if (userDal.insertUser(bracedUser) != 1)
+            return new ResponseMessage("User could not be written into the database.");
+
+        return new ResponseMessage("User was successfully written into database.", 0);
     }
 
     public List<User> getAllUsers() {
@@ -39,6 +44,13 @@ public class UserService {
             return Optional.empty();
 
         return userDal.selectUserByID(id);
+    }
+
+    public Optional<User> verifyUser(String username, String password) {
+        String bracedUsername = Formatter.getInstance().secureQuotes(username);
+        String bracedPassword = Formatter.getInstance().secureQuotes(password);
+
+        return userDal.selectUserByUsernameAndPassword(username, password);
     }
 
     public int deleteUser(int id) {

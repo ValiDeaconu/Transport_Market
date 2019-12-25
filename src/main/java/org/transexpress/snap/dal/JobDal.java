@@ -10,6 +10,8 @@ public interface JobDal {
 
     List<Job> selectAllJobs();
 
+    List<Job> selectAllJobsForUserId(int id);
+
     Optional<Job> selectJobByID(int id);
 
     int deleteJobByID(int id);

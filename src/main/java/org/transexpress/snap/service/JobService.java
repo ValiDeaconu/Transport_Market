@@ -58,6 +58,22 @@ public class JobService {
         return result;
     }
 
+    public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobsForUserId(int id) {
+        List<Job> jobs = jobDal.selectAllJobsForUserId(id);
+
+        List<Cvadruple<Job, User, Float, List<JobPhoto>>> result = new ArrayList<>();
+
+        for (Job job : jobs) {
+            Optional<User> user = userService.getUserByID(job.getOwnerId());
+            float userRate = userReviewService.getAverageRateForUserId(job.getOwnerId());
+            List<JobPhoto> jobPhotos = jobPhotoService.getAllJobPhotosForJobId(job.getId());
+
+            user.ifPresent(value -> result.add(new Cvadruple<>(job, value, userRate, jobPhotos)));
+        }
+
+        return result;
+    }
+
     public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllFilteredJobs(String date,
                                                                                 int minPrice,
                                                                                 int maxPrice,

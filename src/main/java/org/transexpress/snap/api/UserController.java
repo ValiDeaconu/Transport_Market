@@ -3,7 +3,9 @@ package org.transexpress.snap.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.transexpress.snap.misc.Pair;
 import org.transexpress.snap.model.User;
+import org.transexpress.snap.model.UserReview;
 import org.transexpress.snap.service.UserService;
 
 import javax.validation.Valid;
@@ -33,6 +35,11 @@ public class UserController {
     @GetMapping(path = "{id}")
     public User getUserByID(@PathVariable("id") int id) {
         return userService.getUserByID(id).orElse(null);
+    }
+
+    @GetMapping(path = "{view_profile_id}")
+    public Pair<User, List<UserReview>> getUserViewProfile(@PathVariable("view_profle_id") int id) {
+        return userService.getUserViewProfile(id);
     }
 
     @DeleteMapping(path = "{id}")

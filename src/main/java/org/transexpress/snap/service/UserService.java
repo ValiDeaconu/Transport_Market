@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.UserDal;
 import org.transexpress.snap.misc.Checker;
 import org.transexpress.snap.misc.Formatter;
+import org.transexpress.snap.misc.Pair;
 import org.transexpress.snap.model.User;
+import org.transexpress.snap.model.UserReview;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +18,14 @@ import java.util.Optional;
 public class UserService {
     private final UserDal userDal;
 
+    //services
+    private final UserReviewService userReviewService;
+
     @Autowired
-    public UserService(@Qualifier("mysql_users") UserDal userDal) {
+    public UserService(@Qualifier("mysql_users") UserDal userDal,
+                       UserReviewService userReviewService) {
         this.userDal = userDal;
+        this.userReviewService = userReviewService;
     }
 
     public int addUser(User user) {
@@ -37,8 +44,16 @@ public class UserService {
     public Optional<User> getUserByID(int id) {
         if (!Checker.getInstance().checkId(id))
             return Optional.empty();
-
         return userDal.selectUserByID(id);
+    }
+
+    public Pair<User, List<UserReview>> getUserViewProfile(int id){
+        if (!Checker.getInstance().checkId(id))
+            return null;
+        Optional<User> userOpt = userDal.selectUserByID(id);
+        if (!userOpt.isPresent())
+            return null;
+        return new Pair<User, List <UserReview>>(userOpt.get(), userReviewService.getAllUserReviewsForUserId(id));
     }
 
     public int deleteUser(int id) {

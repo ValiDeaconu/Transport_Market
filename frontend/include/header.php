@@ -27,10 +27,10 @@
                     <nav class="main">
                         <ul>
                             <li class="search">
-                                <a class="fa-search" href="#search">Search</a>
-                                <form id="search" method="get" action="#">
-                                    <input type="text" name="query" placeholder="Search" />
-                                </form>
+                                <a class="fa-search" href="#search" id="searchBtn">Search</a>
+                                <div class="searchform" id="search">
+                                    <input type="text" placeholder="Search" id="header-search" />
+                                </div>
                             </li>
                             <li class="menu">
                                 <a class="fa-bars" href="#menu">Menu</a>
@@ -44,9 +44,9 @@
 
                     <!-- Search -->
                         <section>
-                            <form class="search" method="get" action="#">
-                                <input type="text" name="query" placeholder="Search" />
-                            </form>
+                            <div class="searchform">
+                                <input type="text" placeholder="Search" id="menu-search" />
+                            </div>
                         </section>
 
                     <!-- Links -->

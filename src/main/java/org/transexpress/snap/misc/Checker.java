@@ -1,5 +1,13 @@
 package org.transexpress.snap.misc;
 
+import org.transexpress.snap.model.Job;
+import org.transexpress.snap.model.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Checker {
     private static Checker singleton;
 
@@ -114,6 +122,49 @@ public class Checker {
     public boolean tagListContainsTag(String tagList, String tag) {
         for (String insideTag : tagList.split(";"))
             if (insideTag.equals(tag))
+                return true;
+
+        return false;
+    }
+
+    /**
+     * Checks if a job matches searchFilters
+     * @param job job details
+     * @param searchFilters string of filters
+     * @return true if job matches with parts of search filters
+     */
+    public boolean jobMatchesSearchFilters(Job job, String searchFilters) {
+        List<String> tags = Arrays.asList(job.getTags().split(";"));
+        List<String> stops = Arrays.asList(job.getRoute().split(";"));
+
+        for (String filter : searchFilters.toLowerCase().split(" ")) {
+            int matchedTags = (int) tags.stream()
+                    .filter(tag -> tag.toLowerCase().contains(filter))
+                    .count();
+
+            if (matchedTags > 0)
+                return true;
+
+            int matchedStops = (int) stops.stream()
+                    .filter(stop -> stop.toLowerCase().contains(filter))
+                    .count();
+
+            if (matchedStops > 0)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a job matches searchFilters
+     * @param user user details
+     * @param searchFilters string of filters
+     * @return true if job matches with parts of search filters
+     */
+    public boolean userMatchesSearchFilters(User user, String searchFilters) {
+        for (String filter : searchFilters.toLowerCase().split(" "))
+            if (user.getUsername().toLowerCase().contains(filter))
                 return true;
 
         return false;

@@ -40,12 +40,13 @@ public class JobController {
         return jobService.getAllJobsForUserId(id);
     }
 
-    @GetMapping(path = "{date}/{min-price}/{max-price}/{transport-tag}")
+    @GetMapping(path = "{date}/{min-price}/{max-price}/{transport-tag}/{search-filters}")
     public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllFilteredJobs(@PathVariable("date") String date,
                                                                                 @PathVariable("min-price") int minPrice,
                                                                                 @PathVariable("max-price") int maxPrice,
-                                                                                @PathVariable("transport-tag") String transportTag) {
-        return jobService.getAllFilteredJobs(date, minPrice, maxPrice, transportTag);
+                                                                                @PathVariable("transport-tag") String transportTag,
+                                                                                @PathVariable("search-filters") String searchFilters) {
+        return jobService.getAllFilteredJobs(date, minPrice, maxPrice, transportTag, searchFilters);
     }
 
     @GetMapping(path = "{id}")

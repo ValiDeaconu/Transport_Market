@@ -146,7 +146,7 @@ function filterResults() {
 	xhr.send();
 }
 
-const jobsPerPage = 1;
+const jobsPerPage = 10;
 var totalPages = 0;
 var page = 0;
 var jobList = [];

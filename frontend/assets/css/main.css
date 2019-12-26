@@ -1979,46 +1979,24 @@ input, select, textarea {
 				color: rgba(160, 160, 160, 0.3) !important;
 			}
 
-/* Form */
-
-	form {
+	.searchform {
 		margin: 0 0 2em 0;
+		text-decoration: none;
+		position: relative;
 	}
-
-		form.search {
-			text-decoration: none;
-			position: relative;
+	
+		.searchform:before {
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			display: inline-block;
+			font-style: normal;
+			font-variant: normal;
+			text-rendering: auto;
+			line-height: 1;
+			text-transform: none !important;
+			font-family: 'Font Awesome 5 Free';
+			font-weight: 900;
 		}
-
-			form.search:before {
-				-moz-osx-font-smoothing: grayscale;
-				-webkit-font-smoothing: antialiased;
-				display: inline-block;
-				font-style: normal;
-				font-variant: normal;
-				text-rendering: auto;
-				line-height: 1;
-				text-transform: none !important;
-				font-family: 'Font Awesome 5 Free';
-				font-weight: 900;
-			}
-
-			form.search:before {
-				color: #aaaaaa;
-				content: '\f002';
-				display: block;
-				height: 2.75em;
-				left: 0;
-				line-height: 2.75em;
-				position: absolute;
-				text-align: center;
-				top: 0;
-				width: 2.5em;
-			}
-
-			form.search > input:first-child {
-				padding-left: 2.5em;
-			}
 
 	label {
 		color: #3c3b3b;
@@ -3251,11 +3229,11 @@ input, select, textarea {
 							width: inherit;
 						}
 
-		#header form {
+		#header .searchform {
 			margin: 0;
 		}
 
-			#header form input {
+			#header .searchform input {
 				display: inline-block;
 				height: 2.5em;
 				position: relative;

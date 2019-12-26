@@ -142,7 +142,10 @@ function filterResults() {
 			break;
 	}
 
-	xhr.open('get', SERVER_LINK + '/api/v1/job/' + availability + '/' + min_price + '/' + max_price + '/' + transport_type + '', true);
+	if (searchFilters == "")
+		searchFilters = "__empty__";
+
+	xhr.open('get', SERVER_LINK + '/api/v1/job/' + availability + '/' + min_price + '/' + max_price + '/' + transport_type + '/' + searchFilters, true);
 	xhr.send();
 }
 
@@ -155,6 +158,7 @@ var availability = "";
 var min_price = 0;
 var max_price = 30000;
 var transport_type = "";
+var searchFilters = "__empty__";
 
 const xhr = new XMLHttpRequest();
 
@@ -185,3 +189,31 @@ xhr.onreadystatechange = function() {
 
 xhr.open('get', SERVER_LINK + '/api/v1/job', true);
 xhr.send();
+
+var headerSearch = document.getElementById("header-search");
+headerSearch.addEventListener("keyup", function(event) {
+	if (event.keyCode == 13) {
+		// if enter is pressed
+		event.preventDefault();
+
+		searchFilters = headerSearch.value;
+
+		filterResults();
+
+		window.setTimeout(function() {
+			document.getElementById("search").classList.remove("visible");
+		}, 100);
+	}
+});
+
+var menuSearch = document.getElementById("menu-search");
+menuSearch.addEventListener("keyup", function(event) {
+	if (event.keyCode == 13) {
+		// if enter is pressed
+		event.preventDefault();
+
+		searchFilters = menuSearch.value;
+
+		filterResults();
+	}
+});

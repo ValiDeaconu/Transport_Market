@@ -16,3 +16,8 @@ if (authUser != null) {
 } else {
     document.getElementById("visitor-available-actions").style = "display: block;";
 }
+
+function logMeOut() {
+    AuthManager.logOutUser();
+    location.reload();
+}

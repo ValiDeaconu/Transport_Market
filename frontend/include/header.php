@@ -77,6 +77,7 @@
                     <section id="user-available-actions" style="display:none;">
                         <ul class="actions stacked">
                             <li id="user-view-my-profile-button"></li>
+                            <li><a class="button large fit" onclick="logMeOut()">Deautentificare</a></li>
                         </ul>
                     </section>
                     <section id="admin-available-actions" style="display:none;">

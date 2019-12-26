@@ -20,7 +20,7 @@ window.onclick = function(event) {
 var _l_username = document.getElementById("login-username");
 var _l_password = document.getElementById("login-password");
 
-var _l_username_v = false;
+var _l_username_v = true;
 _l_username.onchange = function() {
     var text = _l_username.value;
     if (!/^([a-zA-Z0-9\_\.]+)$/.test(text)) {
@@ -48,7 +48,8 @@ loginsubmit.onclick =  function() {
                    alert("Numele de utilizator sau parola sunt gresite.");
                 } else {
                     var response = JSON.parse(this.responseText);
-                    alert("Bine ai revenit, " + response.username + "!");
+                    AuthManager.logInUser(response);
+                    location.reload();
                 }
             }
         }

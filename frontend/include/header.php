@@ -20,7 +20,8 @@
                     <nav class="links">
                         <ul>
                             <li><a href="/">Home</a></li>
-                            <li><a href="#">News</a></li>
+                            <li id="user-profile-button"></li>
+                            <li id="admin-panel"></li>
                         </ul>
                     </nav>
                     <nav class="main">
@@ -67,11 +68,20 @@
                         </section>
 
                     <!-- Actions -->
-                        <section>
-                            <ul class="actions stacked">
-                                <li><a id="login-button" class="button large fit">Autentificare</a></li>
-                                <li><a id="register-button" class="button large fit">Inregistrare</a></li>
-                            </ul>
-                        </section>
-
+                    <section id="visitor-available-actions" style="display:none;">
+                        <ul class="actions stacked">
+                            <li><a id="login-button" class="button large fit">Autentificare</a></li>
+                            <li><a id="register-button" class="button large fit">Inregistrare</a></li>
+                        </ul>
+                    </section>
+                    <section id="user-available-actions" style="display:none;">
+                        <ul class="actions stacked">
+                            <li id="user-view-my-profile-button"></li>
+                        </ul>
+                    </section>
+                    <section id="admin-available-actions" style="display:none;">
+                        <ul class="actions stacked">
+                            <li id="admin-platform-settings"></li>
+                        </ul>
+                    </section>
                 </section>

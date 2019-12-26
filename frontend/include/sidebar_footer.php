@@ -9,3 +9,12 @@
 
 <!-- Javascript Constants -->
 <script src="script/constants.js"></script>
+
+<!-- Load Class Models -->
+<script src="script/userModel.js"></script>
+
+<!-- Cookie library -->
+<script src="script/cookieLib.js"></script>
+
+<!-- Authentification Status Changes -->
+<script src="script/authStatus.js"></script>

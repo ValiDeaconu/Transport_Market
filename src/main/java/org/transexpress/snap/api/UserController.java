@@ -44,11 +44,6 @@ public class UserController {
         return userService.getUserByID(id).orElse(null);
     }
 
-    @GetMapping(path = "reviews/{id}")
-    public Pair<User, List<UserReview>> getUserViewProfile(@PathVariable("id") int id) {
-        return userService.getUserViewProfile(id);
-    }
-
     @DeleteMapping(path = "{id}")
     public void deleteUserByID(@PathVariable("id") int id) {
         userService.deleteUser(id);

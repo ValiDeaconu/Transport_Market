@@ -51,6 +51,9 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.err.println("SQLException: " + e);
             return false;
+        } catch (Exception e) {
+            System.err.println("Exception: " + e);
+            return false;
         }
 
         return true;

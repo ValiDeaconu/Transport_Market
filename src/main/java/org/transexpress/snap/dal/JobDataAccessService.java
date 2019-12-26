@@ -89,7 +89,6 @@ public class JobDataAccessService implements JobDal {
         try {
             PreparedStatement ps = handle.prepareStatement("SELECT * FROM jobs WHERE ownerId = " + id + ";");
             ResultSet rst = ps.executeQuery();
-            ResultSetMetaData rsmd = rst.getMetaData();
 
             while (rst.next()) {
                 int jobId = rst.getInt("id");
@@ -102,7 +101,7 @@ public class JobDataAccessService implements JobDal {
                 String arrivalDate = rst.getString("arrivalDate");
                 int sale = rst.getInt("sale");
 
-                result.add(new Job(id,
+                result.add(new Job(jobId,
                         description,
                         price,
                         route,

@@ -92,13 +92,4 @@ public class UserService {
                 user.isProvider(),
                 user.isAdmin());
     }
-
-    public Pair<User, List<UserReview>> getUserViewProfile(int id) {
-        if (!Checker.getInstance().checkId(id))
-            return null;
-        Optional<User> userOpt = userDal.selectUserByID(id);
-        if (!userOpt.isPresent())
-            return null;
-        return new Pair<User, List<UserReview>>(userOpt.get(), userReviewService.getAllUserReviewsForUserId(id));
-    }
 }

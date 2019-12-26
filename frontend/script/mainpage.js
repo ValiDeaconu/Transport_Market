@@ -35,7 +35,7 @@ function listJob(cvadruple) {
 			"</div>" +
 			"<div class='meta'>" +
 				"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
-				"<a href='#' class='author'>" + 
+				"<a href='userProfile.php?userId=" + user.id + "' class='author'>" + 
 					"<span class='name'>" + user.username + "</span>" + 
 					"<img src='" + user.profilePictureLink + "' alt='' width='50px' height='50px'/>" + 
 				"</a>" +
@@ -50,8 +50,8 @@ function listJob(cvadruple) {
 				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>See offer</a></li>" +
 			"</ul>" + 
 			"<ul class='stats'>" +
-				"<li><a href='#'>" + job.tags.split(";")[0] + "</a></li>" +
-				"<li><a href='#' class='icon solid fa-star'>" + userRate + "</a></li>" +
+				"<li><a>" + job.tags.split(";")[0] + "</a></li>" +
+				"<li><a class='icon solid fa-star'>" + userRate + "</a></li>" +
 			"</ul>" +
 		"</footer>" +
 	"</article>";

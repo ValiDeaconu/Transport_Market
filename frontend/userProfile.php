@@ -12,26 +12,25 @@
 	</div>
 
 <?php include 'include/sidebar_header.php'; ?>
-    <!-- Intro -->
-        <section id="intro">
-           <div id = "user_info">
-           </div>
-        </section>
-        <section class="blurb">
-            <h2>Reviews</h2>
-            <div id = "user_reviews">
-            </div>
-            <ul class="actions">
-                 <li><a id="review_prev_button" class="disabled button medium previous" onclick="prevReviewPressed()">Previous Review</a></li>
-                <li><a id="review_next_button" class="disabled button medium next" onclick="nextReviewPressed()">Next Review</a></li>
 
-            </ul>
-            <ul class = "actions">
-                 <li><a href='#' class='button medium'>Leave review</a></li>
-            </ul>
-        </section>
+    <section>
+        <div id = "user_info">
+        </div>
+    </section>
+    
+    <section class="blurb">
+        <h2>Reviews</h2>
+        <div id = "user_reviews">
+        </div>
+        <ul class="actions">
+                <li><a id="review_prev_button" class="disabled button medium previous" onclick="prevReviewPressed()">Previous Review</a></li>
+            <li><a id="review_next_button" class="disabled button medium next" onclick="nextReviewPressed()">Next Review</a></li>
 
-
+        </ul>
+        <ul class = "actions">
+                <li><a href='#' class='button medium'>Leave review</a></li>
+        </ul>
+    </section>
 
 <?php include 'include/sidebar_footer.php'; ?>
 

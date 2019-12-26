@@ -35,7 +35,7 @@ function listJob(cvadruple) {
 			"</div>" +
 			"<div class='meta'>" +
 				"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
-				"<a href='#' class='author'>" + 
+				"<a href='userProfile.php?userId=" + user.id + "' class='author'>" + 
 					"<span class='name'>" + user.username + "</span>" + 
 					"<img src='" + user.profilePictureLink + "' alt='' width='50px' height='50px'/>" + 
 				"</a>" +
@@ -50,8 +50,8 @@ function listJob(cvadruple) {
 				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>See offer</a></li>" +
 			"</ul>" + 
 			"<ul class='stats'>" +
-				"<li><a href='#'>" + job.tags.split(";")[0] + "</a></li>" +
-				"<li><a href='#' class='icon solid fa-star'>" + userRate + "</a></li>" +
+				"<li><a>" + job.tags.split(";")[0] + "</a></li>" +
+				"<li><a class='icon solid fa-star'>" + userRate + "</a></li>" +
 			"</ul>" +
 		"</footer>" +
 	"</article>";
@@ -142,11 +142,14 @@ function filterResults() {
 			break;
 	}
 
-	xhr.open('get', SERVER_LINK + '/api/v1/job/' + availability + '/' + min_price + '/' + max_price + '/' + transport_type + '', true);
+	if (searchFilters == "")
+		searchFilters = "__empty__";
+
+	xhr.open('get', SERVER_LINK + '/api/v1/job/' + availability + '/' + min_price + '/' + max_price + '/' + transport_type + '/' + searchFilters, true);
 	xhr.send();
 }
 
-const jobsPerPage = 1;
+const jobsPerPage = 10;
 var totalPages = 0;
 var page = 0;
 var jobList = [];
@@ -155,6 +158,7 @@ var availability = "";
 var min_price = 0;
 var max_price = 30000;
 var transport_type = "";
+var searchFilters = "__empty__";
 
 const xhr = new XMLHttpRequest();
 
@@ -185,3 +189,31 @@ xhr.onreadystatechange = function() {
 
 xhr.open('get', SERVER_LINK + '/api/v1/job', true);
 xhr.send();
+
+var headerSearch = document.getElementById("header-search");
+headerSearch.addEventListener("keyup", function(event) {
+	if (event.keyCode == 13) {
+		// if enter is pressed
+		event.preventDefault();
+
+		searchFilters = headerSearch.value;
+
+		filterResults();
+
+		window.setTimeout(function() {
+			document.getElementById("search").classList.remove("visible");
+		}, 100);
+	}
+});
+
+var menuSearch = document.getElementById("menu-search");
+menuSearch.addEventListener("keyup", function(event) {
+	if (event.keyCode == 13) {
+		// if enter is pressed
+		event.preventDefault();
+
+		searchFilters = menuSearch.value;
+
+		filterResults();
+	}
+});

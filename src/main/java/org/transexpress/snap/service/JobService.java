@@ -1,5 +1,7 @@
 package org.transexpress.snap.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import ch.qos.logback.core.util.SystemInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.transexpress.snap.model.Job;
 import org.transexpress.snap.model.JobPhoto;
 import org.transexpress.snap.model.User;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +80,8 @@ public class JobService {
     public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllFilteredJobs(String date,
                                                                                 int minPrice,
                                                                                 int maxPrice,
-                                                                                String transportTag) {
+                                                                                String transportTag,
+                                                                                String searchFilters) {
         List<Job> jobs = jobDal.selectAllJobs();
 
         List<Job> filteredJobs = jobs.stream()
@@ -92,6 +96,19 @@ public class JobService {
 
                     if (!transportTag.equals("__empty__"))
                         ok = ok && Checker.getInstance().tagListContainsTag(job.getTags(), transportTag);
+
+                    if (!searchFilters.equals("__empty__")) {
+                        boolean matched = Checker.getInstance().jobMatchesSearchFilters(job, searchFilters);
+
+                        if (!matched) {
+                            User user = userService.getUserByID(job.getOwnerId()).orElse(null);
+                            if (user != null) {
+                                matched = Checker.getInstance().userMatchesSearchFilters(user, searchFilters);
+                            }
+                        }
+
+                        ok = ok && matched;
+                    }
 
                     return ok;
                 })

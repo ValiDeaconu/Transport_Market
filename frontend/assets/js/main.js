@@ -1,9 +1,3 @@
-/*
-	Future Imperfect by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
 (function($) {
 
 	var	$window = $(window),
@@ -54,15 +48,11 @@
 				// Not visible?
 					if (!$search.hasClass('visible')) {
 
-						// Reset form.
-							$search[0].reset();
-
 						// Show.
 							$search.addClass('visible');
 
 						// Focus input.
 							$search_input.focus();
-
 					}
 
 			});
@@ -70,6 +60,7 @@
 		$search_input
 			.on('keydown', function(event) {
 
+				// if pressed ESC
 				if (event.keyCode == 27)
 					$search_input.blur();
 

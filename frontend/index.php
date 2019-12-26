@@ -14,8 +14,15 @@
 	</div>
 
 <?php include 'include/sidebar_header.php'; ?>
+	<!-- Intro -->
+	<section id="intro">
+		<a href="#" class="logo"><img src="images/logo.png" alt="" /></a>
+		<header>
+			<h2>TransMarket</h2>
+		</header>
+	</section>
 
-	<!-- Mini Posts -->
+	<!-- Filter panel -->
 	<section>
 		<div class="mini-posts">
 			<div class="col-6 col-12-medium">

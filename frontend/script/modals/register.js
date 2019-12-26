@@ -1,44 +1,3 @@
-// LOGIN MODAL
-var loginmodal = document.getElementById("login-modal");
-var loginbtn = document.getElementById("login-button");
-var loginspan = document.getElementById("login-close");
-
-loginbtn.onclick = function() {
-    loginmodal.style.display = "block";
-    registermodal.style.display = "none";
-    forgotmodal.style.display = "none";
-}
-loginspan.onclick = function() {
-    loginmodal.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == loginmodal) {
-        loginmodal.style.display = "none";
-    }
-}	
-
-var loginsubmit = document.getElementById("login-submit");
-loginsubmit.onclick =  function() {
-    var username = document.getElementById("login-username").value;
-    var password = document.getElementById("login-password").value;
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (Object.keys(this.responseText).length == 0) {
-               alert("Numele de utilizator sau parola sunt gresite.");
-            } else {
-                var response = JSON.parse(this.responseText);
-                alert("Bine ai revenit, " + response.username + "!");
-            }
-        }
-    }
-
-    xhr.open('get', SERVER_LINK + "/api/v1/user/" + username + "/" + password, true);
-    xhr.send();
-}
-
 // REGISTER MODAL
 var registermodal = document.getElementById("register-modal");
 var registerbtn = document.getElementById("register-button");
@@ -66,10 +25,60 @@ var _r_email = document.getElementById("register-email");
 var _r_description = document.getElementById("register-description");
 var _r_isProvider = document.getElementById("register-is-provider");
 
+var _r_username_v = false;
+var _r_password_v = false;
+var _r_phone_v = false;
+var _r_email_v = false;
+
+_r_username.onchange = function() {
+    var text = _r_username.value;
+    if (!/^([a-zA-Z0-9\_\.]+)$/.test(text)) {
+        document.getElementById("register-username-message").style = "visibility: visible; opacity: 1;";
+        _r_username_v = false;
+    } else {
+        document.getElementById("register-username-message").style = "";
+        _r_username_v = true;
+    }
+}
+
+_r_repassword.onchange = function() {
+    var pw = _r_password.value;
+    var rpw = _r_repassword.value;
+    if (pw != rpw) {
+        document.getElementById("register-re-password-message").style = "visibility: visible; opacity: 1;";
+        _r_password_v = false;
+    } else {
+        document.getElementById("register-re-password-message").style = "";
+        _r_password_v = true;
+    }
+}
+
+_r_phone.onchange = function() {
+    var text = _r_phone.value;
+    if (!/^([0-9]{10})$/.test(text)) {
+        document.getElementById("register-phone-message").style = "visibility: visible; opacity: 1;";
+        _r_phone_v = false;
+    } else {
+        document.getElementById("register-phone-message").style = "";
+        _r_phone_v = true;
+    }
+}
+
+_r_email.onchange = function() {
+    var text = _r_email.value;
+    if (!/^([a-zA-Z0-9\_\.]+[\@][a-zA-Z0-9]+[\.][a-zA-Z]+)$/.test(text)) {
+        document.getElementById("register-email-message").style = "visibility: visible; opacity: 1;";
+        _r_email_v = false;
+    } else {
+        document.getElementById("register-email-message").style = "";
+        _r_email_v = true;
+    }
+}
+
 var registersubmit = document.getElementById("register-submit");
 registersubmit.onclick = function() {
-    if (_r_password.value != _r_repassword.value) {
-        alert("Parolele nu coincid.");
+    if (!_r_username_v || !_r_password_v || !_r_phone_v || !_r_email_v) {
+        alert("Campurile sunt completate invalid.");
     } else {
         var userJSON = '{' +
             '"username":"' + _r_username.value + '", ' +
@@ -81,8 +90,6 @@ registersubmit.onclick = function() {
             '"isProvider":' + _r_isProvider.checked + ', ' +
             '"isAdmin":false ' +
         '}';
-
-        console.log(userJSON);
 
         const xhr = new XMLHttpRequest();
 
@@ -102,8 +109,6 @@ registersubmit.onclick = function() {
                 var response = this.responseText;
                 var message = response.errors[0].defaultMessage;
                 alert("Server response: " + message);
-            } else {
-                console.log(this.status);
             }
         }
 
@@ -113,26 +118,3 @@ registersubmit.onclick = function() {
         xhr.send(userJSON);
     }
 }
-
-
-
-// FORGOT MODAL
-var forgotmodal = document.getElementById("forgot-modal");
-var forgotbtn = document.getElementById("login-forgot");
-var forgotspan = document.getElementById("forgot-close");
-
-forgotbtn.onclick = function() {
-    loginmodal.style.display = "none";
-    registermodal.style.display = "none";
-    forgotmodal.style.display = "block";
-}
-
-forgotspan.onclick = function() {
-    forgotmodal.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == forgotmodal) {
-        forgotmodal.style.display = "none";
-    }
-}	

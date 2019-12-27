@@ -26,7 +26,7 @@
                     </nav>
                     <nav class="main">
                         <ul>
-                            <li class="search">
+                            <li class="search" id="header-search-block" style="visibility: hidden;">
                                 <a class="fa-search" href="#search" id="searchBtn">Search</a>
                                 <div class="searchform" id="search">
                                     <input type="text" placeholder="Search" id="header-search" />
@@ -43,31 +43,17 @@
                 <section id="menu">
 
                     <!-- Search -->
-                        <section>
+                        <section id="menu-search-block" style="display: none;">
                             <div class="searchform">
                                 <input type="text" placeholder="Search" id="menu-search" />
                             </div>
                         </section>
 
-                    <!-- Links -->
-                        <section>
-                            <ul class="links">
-                                <li>
-                                    <a href="#">
-                                        <h3>Home</h3>
-                                        <p>View the latest offers</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <h3>News</h3>
-                                        <p>Watch our newslatter and daily updates</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </section>
-
                     <!-- Actions -->
+                    <section>
+                        <a href="/" class="button large fit">Home</a>
+                    </section>
+                    
                     <section id="visitor-available-actions" style="display:none;">
                         <ul class="actions stacked">
                             <li><a id="login-button" class="button large fit">Autentificare</a></li>

@@ -91,6 +91,10 @@ class AuthManager {
         CookieManager.removeCookie("user.isAdmin");
     }
 
+    /**
+     * Method used to check if a user is authentificated and to get its informations if it is
+     * @returns {User} authentificated user or null
+     */
     static getAuthentificatedUser() {
         var userId = CookieManager.readCookie("user.id");
         var userName = CookieManager.readCookie("user.name");

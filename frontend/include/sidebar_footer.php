@@ -8,13 +8,15 @@
 </div>
 
 <!-- Javascript Constants -->
-<script src="script/constants.js"></script>
+<script src="script/libs/Constants.js"></script>
 
 <!-- Load Class Models -->
-<script src="script/userModel.js"></script>
+<script src="script/libs/UserModel.js"></script>
 
-<!-- Cookie library -->
-<script src="script/cookieLib.js"></script>
+<!-- Libraries -->
+<script src="script/libs/Misc.js"></script>
+<script src="script/libs/Cookies.js"></script>
+<script src="script/libs/ServerRequest.js"></script>
 
 <!-- Authentification Status Changes -->
 <script src="script/authStatus.js"></script>

@@ -55,6 +55,12 @@ function listJobDetails(cvadruple) {
 		}
 		others = others.substring(0, others.length - 2);
 	}
+    
+    var tags = job.tags.split(";");
+    var tagsHtml = "";
+    for (var i = 0; i < tags.length; ++i){
+        tagsHtml += "<li><a href='#'>" + tags[i] + "</a></li>";
+    }
 	
 	var html = "<article class='post'>" +
 		"<header>" + 
@@ -93,11 +99,15 @@ function listJobDetails(cvadruple) {
 		"<footer>" +
 			
 			"<ul class='stats'>" +
+				tagsHtml +
+				"<li><a href='#' class='icon solid fa-star'>" + userRate + "</a></li>" +
 				"<li><a>" + job.tags.split(";")[0] + "</a></li>" +
 				"<li><a class='icon solid fa-star'>" + userRate + "</a></li>" +
 			"</ul>" +
 		"</footer>" +
 	"</article>";
+    
+
 
 	return html;
 }

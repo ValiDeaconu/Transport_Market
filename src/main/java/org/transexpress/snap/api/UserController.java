@@ -33,6 +33,17 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path="a/{provider}")
+    public List<String> getAllUsersByProvider(@PathVariable ("provider") boolean isProvider){
+        return userService.getAllUsersNameByProvider(isProvider);
+    }
+
+    @GetMapping(path = "allCostumers")
+    public List<User> getAllCostumers(){ return userService.getAllCustomers();}
+
+    @GetMapping(path = "a/allProviders")
+    public List<User> getAllProviders(){return userService.getAllProviders();}
+
     @GetMapping(path = "{username}/{password}")
     public User verifyUser(@PathVariable("username") String username,
                            @PathVariable("password") String password) {
@@ -49,6 +60,10 @@ public class UserController {
         userService.deleteUser(id);
     }
 
+    @DeleteMapping(path = "{username}")
+    public void deleteUserByUsername(@PathVariable("username") String username){
+        userService.deleteUserByUsername(username);
+    }
     @PutMapping(path = "{id}")
     public void updateUserByID(@PathVariable("id") int id, @Valid @NonNull @RequestBody User userToUpdate) {
         userService.updateUser(id, userToUpdate);

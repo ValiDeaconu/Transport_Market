@@ -17,6 +17,7 @@
 <script src="script/libs/Misc.js"></script>
 <script src="script/libs/Cookies.js"></script>
 <script src="script/libs/ServerRequest.js"></script>
+<script src="script/libs/ModalWrapper.js"></script>
 
 <!-- Authentification Status Changes -->
 <script src="script/authStatus.js"></script>

@@ -10,16 +10,15 @@
 					<p></p>
 				</div>
 				<div class="meta">
-				    <div id = "admin_info">
-                    </div>
+					<time class="published" datetime="2015-11-01">November 1, 2015</time>
+					<a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg" alt="" /></a>
 				</div>
 			</header>
 			<span class="image featured"><img src="images/admin_work.jpg" alt="" /></span>
+			
+            <p><em>Alege utilizatorul pe care doresti sa il modifici</em></p> 
             
-			<section>
-                <p><em>Datele tuturor utilizatorilor</em></p> 
-            </section>
-            
+            <p><em>Alege furnizorul pe care doresti sa il modifici</em></p> 
 			<footer>
 				<ul class="stats">
 					<li><a href="#">General</a></li>
@@ -38,15 +37,8 @@
 		<p><em>Administratorul trebuie sa fie constient de puterea pe care o detine</em>.</p>
         
         <p>Gestiune utilizatori</p>
-        <section id="admin-actions">
-            <ul class="actions stacked">
-                <li><a id="add-button" class="button large fit">Adaugare utilizator</a></li>
-                
-                <li><a id="delete-button" class="button large fit">Stergere utilizator</a></li>
-
-            </ul>
-        </section>
         
+        <p>Gestiune furnizori</p>
 	</section>
 
 <?php include 'include/sidebar_footer.php'; ?>

@@ -1,4 +1,3 @@
-
 <?php include 'include/header.php'; ?>
 
 	<!-- Main -->
@@ -38,4 +37,3 @@
 	<script src="script/userProfile.js"></script>
 
 <?php include 'include/footer.php'; ?> 
-

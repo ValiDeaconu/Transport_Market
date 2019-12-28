@@ -50,6 +50,9 @@ public class JobService {
 
         List<Cvadruple<Job, User, Float, List<JobPhoto>>> result = new ArrayList<>();
 
+        if (jobs == null)
+            return result;
+
         for (Job job : jobs) {
             Optional<User> user = userService.getUserByID(job.getOwnerId());
             float userRate = userReviewService.getAverageRateForUserId(job.getOwnerId());

@@ -36,6 +36,8 @@ class ServerRequest {
                 throw new Error("ServerRequest.send: Object is null");
 
             this.xhr.open(method, (__SERVER_LINK__ + endPoint), true);
+            this.xhr.setRequestHeader("Accept", "application/json");
+            this.xhr.setRequestHeader("Content-type", "application/json");
             this.xhr.send(object);
         } else {
             throw new Error("ServerRequest.send: Unknown method");

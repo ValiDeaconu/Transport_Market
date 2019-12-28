@@ -11,11 +11,15 @@ public interface UserDal {
 
     List<User> selectAllUsers();
 
+    List<String> selectAllUsersNamesByProvider(boolean isProvider);
+
     Optional<User> selectUserByID(int id);
 
     Optional<User> selectUserByUsernameAndPassword(String username, String password);
 
     int deleteUserByID(int id);
+
+    int deleteUserByUsername(String username);
 
     int updateUserByID(int id, User user);
 }

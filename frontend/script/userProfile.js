@@ -10,7 +10,7 @@ function parseDate(date) {
 
 function listUser(user){
 
-    var html = '<section id="intro">' + 
+    var html = '<section>' +
                '<img src="' + user.profilePictureLink + '" alt="" width = "100%" height = "300px"/>' +
                '<button class="button fit">Chat</button>' +
                '<header style="padding:20px">' +

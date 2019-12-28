@@ -1,30 +1,33 @@
-// REGISTER MODAL
-var registermodal = document.getElementById("register-modal");
-var registerbtn = document.getElementById("register-button");
-var registerspan = document.getElementById("register-close");
+// adaugare utlizator MODAL
+var addmodal = document.getElementById("add-modal");
+var addbtn = document.getElementById("add-button");
+var addspan = document.getElementById("add-close");
 
-registerbtn.onclick = function() {
-    registermodal.style.display = "block";
+addbtn.onclick = function() {
+    addmodal.style.display = "block";
     loginmodal.style.display = "none";
     forgotmodal.style.display = "none";
     delmodal.style.display = "none";
 }
-registerspan.onclick = function() {
-    registermodal.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == registermodal) {
-        registermodal.style.display = "none";
-    }
-}	
 
-var _r_username = document.getElementById("register-username");
-var _r_password = document.getElementById("register-password");
-var _r_repassword = document.getElementById("register-re-password");
-var _r_phone = document.getElementById("register-phone");
-var _r_email = document.getElementById("register-email");
-var _r_description = document.getElementById("register-description");
-var _r_isProvider = document.getElementById("register-is-provider");
+addspan.onclick = function() {
+    addmodal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == addmodal) {
+        addmodal.style.display = "none";
+    }
+}
+
+var _r_username = document.getElementById("add-username");
+var _r_password = document.getElementById("add-password");
+var _r_repassword = document.getElementById("add-re-password");
+var _r_phone = document.getElementById("add-phone");
+var _r_email = document.getElementById("add-email");
+var _r_description = document.getElementById("add-description");
+var _r_isProvider = document.getElementById("add-is-provider");
+var _r_isAdmin = document.getElementById("add-is-admin");
 
 var _r_username_v = false;
 var _r_password_v = false;
@@ -34,10 +37,10 @@ var _r_email_v = false;
 _r_username.onchange = function() {
     var text = _r_username.value;
     if (!/^([a-zA-Z0-9\_\.]+)$/.test(text)) {
-        document.getElementById("register-username-message").style = "visibility: visible; opacity: 1;";
+        document.getElementById("add-username-message").style = "visibility: visible; opacity: 1;";
         _r_username_v = false;
     } else {
-        document.getElementById("register-username-message").style = "";
+        document.getElementById("add-username-message").style = "";
         _r_username_v = true;
     }
 }
@@ -46,10 +49,10 @@ _r_repassword.onchange = function() {
     var pw = _r_password.value;
     var rpw = _r_repassword.value;
     if (pw != rpw) {
-        document.getElementById("register-re-password-message").style = "visibility: visible; opacity: 1;";
+        document.getElementById("add-re-password-message").style = "visibility: visible; opacity: 1;";
         _r_password_v = false;
     } else {
-        document.getElementById("register-re-password-message").style = "";
+        document.getElementById("add-re-password-message").style = "";
         _r_password_v = true;
     }
 }
@@ -57,10 +60,10 @@ _r_repassword.onchange = function() {
 _r_phone.onchange = function() {
     var text = _r_phone.value;
     if (!/^([0-9]{10})$/.test(text)) {
-        document.getElementById("register-phone-message").style = "visibility: visible; opacity: 1;";
+        document.getElementById("add-phone-message").style = "visibility: visible; opacity: 1;";
         _r_phone_v = false;
     } else {
-        document.getElementById("register-phone-message").style = "";
+        document.getElementById("add-phone-message").style = "";
         _r_phone_v = true;
     }
 }
@@ -68,16 +71,16 @@ _r_phone.onchange = function() {
 _r_email.onchange = function() {
     var text = _r_email.value;
     if (!/^([a-zA-Z0-9\_\.]+[\@][a-zA-Z0-9]+[\.][a-zA-Z]+)$/.test(text)) {
-        document.getElementById("register-email-message").style = "visibility: visible; opacity: 1;";
+        document.getElementById("add-email-message").style = "visibility: visible; opacity: 1;";
         _r_email_v = false;
     } else {
-        document.getElementById("register-email-message").style = "";
+        document.getElementById("add-email-message").style = "";
         _r_email_v = true;
     }
 }
 
-var registersubmit = document.getElementById("register-submit");
-registersubmit.onclick = function() {
+var addsubmit = document.getElementById("add-submit");
+addsubmit.onclick = function() {
     if (!_r_username_v || !_r_password_v || !_r_phone_v || !_r_email_v) {
         alert("Campurile sunt completate invalid.");
     } else {
@@ -89,7 +92,7 @@ registersubmit.onclick = function() {
             '"description":"' + _r_description.value + '", ' +
             '"profile_picture_link":"http://localhost/images/avatar.jpg", ' +
             '"isProvider":' + _r_isProvider.checked + ', ' +
-            '"isAdmin":false ' +
+            '"isAdmin":' + _r_isAdmin.checked +
         '}';
 
         const xhr = new XMLHttpRequest();
@@ -103,7 +106,7 @@ registersubmit.onclick = function() {
                     if (response.code != 0) {
                         alert("Server response: " + response.message);
                     } else {
-                       alert("Cont creat cu succes! Te poti autentifica.");    
+                       alert("Cont creat cu succes!");
                     }
                 }
             } else if (this.status == 400) {
@@ -115,6 +118,7 @@ registersubmit.onclick = function() {
 
         xhr.open('post', SERVER_LINK + "/api/v1/user/", true);
         xhr.setRequestHeader("Accept", "application/json");
+
         xhr.setRequestHeader("Content-type", "application/json");
         xhr.send(userJSON);
     }

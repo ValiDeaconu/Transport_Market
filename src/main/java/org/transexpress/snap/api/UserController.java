@@ -33,11 +33,6 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(path="a/{provider}")
-    public List<String> getAllUsersByProvider(@PathVariable ("provider") boolean isProvider){
-        return userService.getAllUsersNameByProvider(isProvider);
-    }
-
     @GetMapping(path = "allCostumers")
     public List<User> getAllCostumers(){ return userService.getAllCustomers();}
 
@@ -60,7 +55,7 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @DeleteMapping(path = "{username}")
+    @DeleteMapping(path = "/deleteByUsername/{username}")
     public void deleteUserByUsername(@PathVariable("username") String username){
         userService.deleteUserByUsername(username);
     }

@@ -1,29 +1,25 @@
-var delmodal = document.getElementById("delete-modal");
-var delbtn = document.getElementById("delete-button");
-var delspan = document.getElementById("delete-close");
+var d_delmodal = document.getElementById("delete-modal");
+var d_delbtn = document.getElementById("delete-button");
+var d_delspan = document.getElementById("delete-close");
 
 
-delbtn.onclick = function() {
-    delmodal.style.display = "block";
-    loginmodal.style.display = "none";
-    forgotmodal.style.display = "none";
-    addmodal.style.display = "none";
+d_delbtn.onclick = function() {
+    d_delmodal.style.display = "block";
 }
 
-delspan.onclick=function(){
-    delmodal.style.display = "none";
+d_delspan.onclick=function(){
+    d_delmodal.style.display = "none";
 }
 
 window.onclick = function(event){
-    if (event.target == delmodal){
-        delmodal.style.display = "none";
+    if (event.target == d_delmodal){
+        d_delmodal.style.display = "none";
     }
 }
 
 var d_username = document.getElementById("delete-user-username");
 
 var _d_username_v=false;
-var isCorect=false;
 
 d_username.onchange = function(){
     var text = d_username.value;
@@ -37,38 +33,32 @@ d_username.onchange = function(){
 }
 
 var deletesubmit = document.getElementById("delete-submit");
-deletesubmit.onclik = function(){
-    console.log("12345");
-    var username = d_username.value;
+
+
+deletesubmit.onclick = function(){
     
-    if (username = "" || ! _d_username_v){
+    var dd_username = d_username.value;
+    if (dd_username = "" || ! _d_username_v){
         alert("Campurile sunt completate eronat");
     }else{
         const xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function(){
             if( this.readyState == 4 && this.status == 200){
-            if (Object.keys(this.responseText).length == 0) {
-                alert("Numele utilizatorului nu exista.");
-            } else {
-                var response = JSON.parse(this.responseText);
-                if (response.code != 0) {
-                    alert("Server response: " +response.message);
+                if (Object.keys(this.responseText).length == 0) {
+                    alert("Numele utilizatorului nu exista.");
                 } else {
-                   alert("Stergere efectuata cu succes!");    
-                }
-              }
-            }else if (this.status == 400){
-                var response = this.responseText;
-                var message = response.errors[0].defaultMessage;
-                alert("Server response: " + message);
+                    var response = JSON.parse(this.responseText);
+                    if (response.code != 0) {
+                        alert("Server response: " +response.message);
+                    } else {
+                       alert("Stergere efectuata cu succes!");    
+                    }
+                  }
             }
         }
-        
-        xhr.open('delete', SERVER_LINK + "/api/v1/user/" + username, true);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(userJSON);
+        xhr.open('DELETE', SERVER_LINK + "/api/v1/user/deleteByUsername/" + dd_username, true);
+        xhr.send();
         
     }
 }

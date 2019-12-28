@@ -74,10 +74,6 @@ public class UserService {
         return result;
     }
 
-    public List<String> getAllUsersNameByProvider(boolean isProvider){
-        return userDal.selectAllUsersNamesByProvider(isProvider);
-    }
-
     public Optional<User> getUserByID(int id) {
         if (!Checker.getInstance().checkId(id))
             return Optional.empty();

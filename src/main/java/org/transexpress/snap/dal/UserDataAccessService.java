@@ -81,29 +81,6 @@ public class UserDataAccessService implements UserDal {
 
         return (result.size() == 0) ? null : result;
     }
-    @Override
-    public List<String> selectAllUsersNamesByProvider(boolean isProvider){
-        List<String> result = new ArrayList<>();
-        Connection handle = DatabaseManager.connect();
-
-        try {
-            PreparedStatement ps = handle.prepareStatement("SELECT username FROM users WHERE isProvider = " + isProvider +";");
-            ResultSet rst = ps.executeQuery();
-            ResultSetMetaData rsmd = rst.getMetaData();
-
-            while (rst.next()) {
-                String username = rst.getString("username");
-                result.add(username);
-            }
-            ps.close();
-            rst.close();
-        } catch (SQLException ex) {
-            System.err.println("SQLException: " + ex);
-        }
-
-        DatabaseManager.close(handle);
-        return (result.size() == 0) ? null : result;
-    }
 
     @Override
     public Optional<User> selectUserByID(int id) {
@@ -214,7 +191,7 @@ public class UserDataAccessService implements UserDal {
         int rowCount = 0;
         try {
             Statement stmt = handle.createStatement();
-            rowCount = stmt.executeUpdate("DELETE FROM `users` WHERE `username` = '" + username + "' ;");
+            rowCount = stmt.executeUpdate("DELETE FROM users WHERE username = '" + username + "' " +";");
 
             stmt.close();
         }

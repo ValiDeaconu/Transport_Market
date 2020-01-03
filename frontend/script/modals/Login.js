@@ -1,62 +1,60 @@
-/**
- * Script behind Login Modal
- * Global vars used: _lm_
- * @author Valentin Deaconu
- */ 
-var _lm_ = new ModalWrapper("login-modal", "login-button", "login-close");
+// LOGIN MODAL
+var loginmodal = document.getElementById("login-modal");
+var loginbtn = document.getElementById("login-button");
+var loginspan = document.getElementById("login-close");
 
-_lm_.addCacheItem("username", false);
+loginbtn.onclick = function() {
+    loginmodal.style.display = "block";
+    registermodal.style.display = "none";
+    forgotmodal.style.display = "none";
+}
+loginspan.onclick = function() {
+    loginmodal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == loginmodal) {
+        loginmodal.style.display = "none";
+    }
+}	
 
-function usernameChange() {
-    _lm_.cache["login-username"] = document.getElementById("login-username").value;
+var _l_username = document.getElementById("login-username");
+var _l_password = document.getElementById("login-password");
 
-    if (!/^([a-zA-Z0-9\_\.]+)$/.test(_lm_.cache["login-username"])) {
+var _l_username_v = true;
+_l_username.onchange = function() {
+    var text = _l_username.value;
+    if (!/^([a-zA-Z0-9\_\.]+)$/.test(text)) {
         document.getElementById("login-username-message").style = "visibility: visible; opacity: 1;";
-        _lm_.cache["username"] = false;
+        _l_username_v = false;
     } else {
         document.getElementById("login-username-message").style = "";
-        _lm_.cache["username"] = true;
+        _l_username_v = true;
     }
 }
 
-_lm_.addCacheItem("login-username", document.getElementById("login-username").value);
+var loginsubmit = document.getElementById("login-submit");
+loginsubmit.onclick =  function() {
+    var username = document.getElementById("login-username").value;
+    var password = document.getElementById("login-password").value;
 
-if (_lm_.cache["login-username"] != "") {
-    usernameChange();
-}
-
-_lm_.addFormItem("login-username", usernameChange);
-
-
-_lm_.addCacheItem("login-password", document.getElementById("login-password").value);
-_lm_.addFormItem("login-password", function(){
-    _lm_.cache["login-password"] = document.getElementById("login-password").value;
-});
-
-_lm_.addButtonItem("login-submit", function() {
-    var username = _lm_.cache["login-username"];
-    var password = _lm_.cache["login-password"];
-
-    if (username == "" || password == "" || !_lm_.cache["username"]) {
-        console.log(username == "");
-        console.log(password == "");
-        console.log(_lm_.cache["username"]);
+    if (_l_username.value == "" || _l_password.value == "" || !_l_username_v) {
         alert("Campurile sunt completate eronat.");
     } else {
-        const sr = new ServerRequest(function(responseText) {
-            if (Object.keys(responseText).length == 0) {
-                alert("Numele de utilizator sau parola sunt gresite.");
-            } else {
-                var response = JSON.parse(responseText);
-                AuthManager.logInUser(response);
-                location.reload();
+        const xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (Object.keys(this.responseText).length == 0) {
+                   alert("Numele de utilizator sau parola sunt gresite.");
+                } else {
+                    var response = JSON.parse(this.responseText);
+                    AuthManager.logInUser(response);
+                    location.reload();
+                }
             }
-        }, function(status, responseText) {
-            console.log("HTTPStatus: " + status);
-            console.log("Server response: " + responseText);
-        });
+        }
     
-        var api = "/api/v1/user/" + username + "/" + password;
-        sr.send(RequestMethod.GET, api);
+        xhr.open('get', SERVER_LINK + "/api/v1/user/" + username + "/" + password, true);
+        xhr.send();
     }
-});
+}

@@ -1,4 +1,4 @@
-<!-- Delete user by username and password Modal -->
+<!-- Delete user by username Modal -->
 <div id="delete-modal" class="modal">
 
     <!-- Modal content -->

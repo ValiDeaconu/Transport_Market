@@ -80,6 +80,15 @@ public class UserService {
         return userDal.selectUserByID(id);
     }
 
+    public Optional<User> getUserByUsername(String username){
+        Optional<User> result = userDal.selectUserByName(username);
+
+        if ( result == null)
+            return Optional.empty();
+
+        return result;
+    }
+
         public Optional<User> verifyUser(String username, String password) {
         String bracedUsername = Formatter.getInstance().secureQuotes(username);
         String bracedPassword = Formatter.getInstance().secureQuotes(password);

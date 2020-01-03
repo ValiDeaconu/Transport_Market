@@ -1,3 +1,6 @@
-<script src="script/modals/Login.js"></script>
-<script src="script/modals/Register.js"></script>
-<script src="script/modals/Forgot.js"></script>
+<script src="script/modals/login.js"></script>
+<script src="script/modals/register.js"></script>
+<script src="script/modals/forgot.js"></script>
+<script src="script/modals/adminAdaugaUser.js"></script>
+<script src="script/modals/adminDeleteUser.js"></script>
+<script src="script/modals/adminUpdateUser.js"></script>

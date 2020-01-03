@@ -61,6 +61,8 @@
             <ul class="actions stacked">
                 <li><a id="add-button" class="button large fit">Adaugare utilizator</a></li>
                 
+                 <li><a id="search-update-button" class="button large fit">Modifica utilizator</a></li>
+                
                 <li><a id="delete-button" class="button large fit">Stergere utilizator</a></li>
 
             </ul>

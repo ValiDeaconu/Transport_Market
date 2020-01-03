@@ -43,21 +43,16 @@ deletesubmit.onclick = function(){
     }else{
         const xhr = new XMLHttpRequest();
 
-        xhr.onreadystatechange = function(){
+        xhr.open('DELETE', SERVER_LINK + "/api/v1/user/deleteByUsername/" + dd_username, true);
+        xhr.onload = function(){
+            var users = JSON.parse(xhr.responseText);
             if( this.readyState == 4 && this.status == 200){
-                if (Object.keys(this.responseText).length == 0) {
-                    alert("Numele utilizatorului nu exista.");
-                } else {
-                    var response = JSON.parse(this.responseText);
-                    if (response.code != 0) {
-                        alert("Server response: " +response.message);
-                    } else {
-                       alert("Stergere efectuata cu succes!");    
-                    }
-                  }
+                console.table(users);
+            }else{
+                console.error(users);
             }
         }
-        xhr.open('DELETE', SERVER_LINK + "/api/v1/user/deleteByUsername/" + dd_username, true);
+
         xhr.send();
         
     }

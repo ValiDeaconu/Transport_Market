@@ -3,6 +3,7 @@ package org.transexpress.snap.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.Wallet;
 import org.transexpress.snap.service.WalletService;
 
@@ -26,15 +27,15 @@ public class WalletController {
     }
 
 
-    @GetMapping(path = "{id}")
+    /*@GetMapping(path = "{id}")
     public Wallet getWalletById(@PathVariable("id") int id) {
         return walletService.getWalletByID(id).orElse(null);
-    }
+    }*/
 
 
-    @GetMapping
-    public List<Wallet> getAllWalletsForUserID() {
-        return null;//walletService.getAllWalletsForUserId(id);
+    @GetMapping(path = "{id}")
+    public List<Wallet> getAllWalletsForUserID(@PathVariable("id") int id) {
+        return walletService.getAllWalletsForUserId(id);
     }
 
     @DeleteMapping(path = "{id}")
@@ -42,8 +43,19 @@ public class WalletController {
         walletService.removeWallet(id);
     }
 
-    @PutMapping(path = "{id}")
+    /*@PutMapping(path = "{id}")
     public void updateWalletsByID(@PathVariable("id") int id, @Valid @NonNull @RequestBody Wallet wallet) {
         walletService.updateWalletByID(id, wallet);
+    }*/
+
+    @PutMapping(path = "extragere/")
+    public ResponseMessage updateWithdraw( @RequestBody Wallet wallet){
+        return walletService.updateWithdraw(wallet.getUserId(), wallet.getBalance());
     }
+
+    @PutMapping(path = "depunere/{userId}")
+    public ResponseMessage updateDeposit(@PathVariable("userId") int userId,  @RequestBody Wallet wallet){
+        return walletService.updateDeposit(userId, wallet.getBalance());
+    }
+
 }

@@ -61,7 +61,7 @@
                                 <li>
                                     <a href="#">
                                         <h3>News</h3>
-                                        <p>Watch our newslatter and daily updates</p>
+                                        <p>Watch our newsletter and daily updates</p>
                                     </a>
                                 </li>
                             </ul>

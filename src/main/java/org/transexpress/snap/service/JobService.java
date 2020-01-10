@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.JobDal;
 import org.transexpress.snap.misc.Checker;
 import org.transexpress.snap.misc.Cvadruple;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.Job;
 import org.transexpress.snap.model.JobPhoto;
 import org.transexpress.snap.model.User;
@@ -40,9 +41,11 @@ public class JobService {
         this.jobPhotoService = jobPhotoService;
     }
 
-    public int addJob(Job job) {
-
-        return jobDal.insertJob(job);
+    public ResponseMessage addJob(Job job) {
+        int code = jobDal.insertJob(job);
+        if (code < 0){
+            return new ResponseMessage("Database error", -1);
+        } else return new ResponseMessage("Job added successfully", code);
     }
 
     public List<Cvadruple<Job, User, Float, List<JobPhoto>>> getAllJobs() {

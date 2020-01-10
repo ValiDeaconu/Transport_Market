@@ -3,6 +3,11 @@ package org.transexpress.snap.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.transexpress.snap.misc.Pair;
+import org.transexpress.snap.misc.ResponseMessage;
+import org.transexpress.snap.misc.Tuple;
+import org.transexpress.snap.model.Job;
+import org.transexpress.snap.model.JobPhoto;
 import org.transexpress.snap.model.Order;
 import org.transexpress.snap.model.User;
 import org.transexpress.snap.service.OrderService;
@@ -22,8 +27,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public void addOrder(@Valid @NonNull @RequestBody Order order) {
-        orderService.addOrder(order);
+    public ResponseMessage addOrder(@Valid @NonNull @RequestBody Order order) {
+        return orderService.addOrder(order);
     }
 
 
@@ -33,8 +38,8 @@ public class OrderController {
     }
 
 
-    @GetMapping(path = "{orderId}")
-    public List<Order> getAllOrdersForUserID(@PathVariable("orderId") int id) {
+    @GetMapping(path = "userId/{userId}")
+    public List<Tuple<Job, List<JobPhoto>, User>> getAllOrdersForUserID(@PathVariable("userId") int id) {
         return orderService.getAllOrdersForUserId(id);
     }
 

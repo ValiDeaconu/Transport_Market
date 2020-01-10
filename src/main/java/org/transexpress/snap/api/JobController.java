@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import org.transexpress.snap.misc.Cvadruple;
 import org.transexpress.snap.misc.Pair;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.misc.Tuple;
 import org.transexpress.snap.model.Job;
 import org.transexpress.snap.model.JobPhoto;
@@ -25,9 +26,10 @@ public class JobController {
     public JobController(JobService jobService) {
         this.jobService = jobService;
     }
+    
     @PostMapping
-    public void addJob(@Valid @NonNull @RequestBody Job job) {
-        jobService.addJob(job);
+    public ResponseMessage addJob(@Valid @NonNull @RequestBody Job job) {
+        return jobService.addJob(job);
     }
 
     @GetMapping

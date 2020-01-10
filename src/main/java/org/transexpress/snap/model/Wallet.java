@@ -22,5 +22,5 @@ public class Wallet {
 
     public int getId(){return this.id;}
     public int getBalance(){return this.balance;}
-    public int getUserId(){return this.balance;}
+    public int getUserId(){return this.userId;}
 }

@@ -9,4 +9,5 @@ public interface JobPhotoDal {
     int deleteJobPhoto(int id);
     List<JobPhoto> selectAllJobPhotos();
 
+    int insertJobPhotoAsStr(String links, int jobId);
 }

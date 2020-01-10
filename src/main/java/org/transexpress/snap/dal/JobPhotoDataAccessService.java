@@ -32,6 +32,16 @@ public class JobPhotoDataAccessService implements JobPhotoDal {
     }
 
     @Override
+    public int insertJobPhotoAsStr(String links, int jobId) {
+        int code = 0;
+        String[] linksParsed = links.split(";");
+        for (int i = 0; i < linksParsed.length; i++){
+            code = insertJobPhoto(new JobPhoto(0, linksParsed[i], jobId));
+        }
+        return code;
+    }
+
+    @Override
     public int deleteJobPhoto(int id) {
         Connection handle = DatabaseManager.connect();
 
@@ -49,6 +59,31 @@ public class JobPhotoDataAccessService implements JobPhotoDal {
         DatabaseManager.close(handle);
 
         return rowCount;
+    }
+
+    private int getLastId(){
+        List<Integer> result = new ArrayList<>();
+        Connection handle = DatabaseManager.connect();
+        try {
+            PreparedStatement ps = handle.prepareStatement("SELECT * FROM jobs;");
+            ResultSet rst = ps.executeQuery();
+
+            while (rst.next()) {
+                int id = rst.getInt("id");
+                result.add(id);
+            }
+
+            ps.close();
+            rst.close();
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex);
+        }
+
+        DatabaseManager.close(handle);
+        System.out.println(result.get(result.size() - 1));
+
+        return (result.size() == 0) ? 0 : result.get(result.size() - 1);
+
     }
 
     @Override

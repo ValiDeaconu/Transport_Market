@@ -196,11 +196,11 @@ public class UserDataAccessService implements UserDal {
                     " username = '" + user.getUsername() + "'" +
                     ", password = '" + user.getPassword() + "'" +
                     ", phone = '" + user.getPhone() + "'" +
-                    ", email = '" + user.getPhone() + "'" +
+                    ", email = '" + user.getEmail() + "'" +
                     ", description = '" + user.getDescription() + "'" +
                     ", profile_picture_link = '" + user.getProfilePictureLink() + "'" +
-                    ", isProvider = " + (user.isProvider() ? "TRUE" : "FALSE") +
-                    ", isAdmin = " + (user.isAdmin() ? "TRUE" : "FALSE") +
+                    ", isProvider = " + user.isProvider() +
+                    ", isAdmin = " + user.isAdmin()  +
                     " WHERE id = " + id + ";");
 
             stmt.close();
@@ -210,6 +210,7 @@ public class UserDataAccessService implements UserDal {
         }
 
         DatabaseManager.close(handle);
+        System.out.println(rowCount);
 
         return rowCount;
     }

@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class Job {
     private final int id;
     @NotEmpty(message = "Please enter description")
     private final String description;
-    @NotBlank(message = "Please enter price")
+    //@NotBlank(message = "Please enter price")
     private final int price;
     @NotEmpty(message = "Please enter route")
     private final String route;
@@ -21,9 +22,9 @@ public class Job {
     private final String departureDate;
     @NotEmpty(message = "Please enter arrivalDate")
     private final String arrivalDate;
-    @NotBlank(message = "Please enter sale")
+    @NotNull(message = "Please enter sale")
     private final int sale;
-    @NotBlank(message = "Please insert ownerId")
+    @NotNull(message = "Please insert ownerId")
     private final int ownerId;
 
 

@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateUserByID(@PathVariable("id") int id, @Valid @NonNull @RequestBody User userToUpdate) {
-        userService.updateUser(id, userToUpdate);
+    public ResponseMessage updateUserByID(@PathVariable("id") int id, @Valid @NonNull @RequestBody User userToUpdate) {
+        return userService.updateUser(id, userToUpdate);
     }
 }

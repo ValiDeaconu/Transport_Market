@@ -21,18 +21,44 @@ public class JobDataAccessService implements JobDal {
         try {
             Statement stmt = handle.createStatement();
             rowCount = stmt.executeUpdate("INSERT INTO `jobs` (description, price, route, tags, postDate, departureDate, arrivalDate, sale, ownerId) " +
-                    "VALUES ('" + job.getDescription() + "', MD5('" + job.getPrice() + "'), '" + job.getRoute() + "', '" + job.getTags() + "', " +
-                    "'" + job.getPostDate() + "', '" + job.getDepartureDate() + "', " + job.getArrivalDate() + ", " + job.getSale() + ", " + job.getOwnerId() + ");");
+                    "VALUES ('" + job.getDescription() + "', " + job.getPrice() + ", '" + job.getRoute() + "', '" + job.getTags() + "', " +
+                    "'" + job.getPostDate() + "', '" + job.getDepartureDate() + "', '" + job.getArrivalDate() + "', " + job.getSale() + ", " + job.getOwnerId() + ");");
 
             stmt.close();
         }
         catch (SQLException e) {
             System.err.println("Operation failed: " + e);
         }
+        int lastId = 0;
+        try {
+            String str = "SELECT id FROM jobs where (description='" +job.getDescription() +
+                    "' and price = " + job.getPrice() + " and route = '" + job.getRoute() + "' and tags='" + job.getTags() +
+                    "' and postDate='" + job.getPostDate() +"' and departureDate = '" + job.getDepartureDate() +
+                    "' and arrivalDate = '" + job.getArrivalDate() + "' and sale = " + job.getSale() + " and ownerId =" +
+                    job.getOwnerId() +");";
+            System.out.println(str);
+            PreparedStatement ps = handle.prepareStatement(str);
+            ResultSet rst = ps.executeQuery();
+            ResultSetMetaData rsmd = rst.getMetaData();
+
+            while (rst.next()) {
+                int id = rst.getInt("id");
+
+                lastId = id;
+            }
+
+            ps.close();
+            rst.close();
+        } catch (SQLException ex) {
+            System.err.println("SQLException: " + ex);
+        } catch (Exception e) {
+            System.err.println("Exception: " + e);
+        }
+
 
         DatabaseManager.close(handle);
 
-        return rowCount;
+        return lastId;
     }
     @Override
     public List<Job> selectAllJobs() {

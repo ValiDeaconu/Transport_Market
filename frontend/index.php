@@ -45,7 +45,7 @@
 					<li>
 						<div class="col-12">
 							<select name="filter-type" id="filter-type">
-								<option value="0">- Transport Type -</option>
+								<option value="0">-</option>
 								<option value="1">Carpooling</option>
 								<option value="2">Ride-sharing</option>
 								<option value="3">Freight transport</option>
@@ -62,15 +62,6 @@
 				</ul>
 			</div>
 		</div>
-	</section>
-
-	<!-- About -->
-	<section class="blurb">
-		<h2>About</h2>
-		<p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.</p>
-		<ul class="actions">
-			<li><a href="#" class="button">Learn More</a></li>
-		</ul>
 	</section>
 
 <?php include 'include/sidebar_footer.php'; ?>

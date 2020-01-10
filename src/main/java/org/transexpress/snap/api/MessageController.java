@@ -3,7 +3,9 @@ package org.transexpress.snap.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.transexpress.snap.misc.Tuple;
 import org.transexpress.snap.model.Message;
+import org.transexpress.snap.model.User;
 import org.transexpress.snap.service.MessageService;
 
 import javax.validation.Valid;
@@ -27,13 +29,18 @@ public class MessageController {
     }
 
     @GetMapping(path = "{firstUserId}/{secondUserId}")
-    public List<Message> getAllMessagesBetweenUsers(@PathVariable("firstUserId") int firstUserId,
-                                                       @PathVariable("secondUserId") int secondUserId) {
+    public Tuple<User, User, List<Message>> getAllMessagesBetweenUsers(@PathVariable("firstUserId") int firstUserId,
+                                                                       @PathVariable("secondUserId") int secondUserId) {
         return messageService.selectAllMessagesBetweenUsers(firstUserId, secondUserId);
     }
 
     @GetMapping(path = "{id}")
     public Message getMessageByID(@PathVariable("id") int id) {
         return messageService.selectMessageByID(id).orElse(null);
+    }
+
+    @GetMapping(path = "list/{userId}")
+    public List<User> getAllPersonsWhichTalkedToUserId(@PathVariable("userId") int userId) {
+        return messageService.getAllPersonsWhichTalkedToUserId(userId);
     }
 }

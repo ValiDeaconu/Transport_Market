@@ -83,6 +83,8 @@ public class MessageDataAccessService implements MessageDal {
             rst.close();
         } catch (SQLException ex) {
             System.err.println("SQLException: " + ex);
+        } catch (Exception e) {
+            System.err.println("Exception: " + e);
         }
 
         DatabaseManager.close(handle);

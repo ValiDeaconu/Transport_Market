@@ -1,102 +1,104 @@
 // adaugare utlizator MODAL
-var a_addmodal = document.getElementById("add-modal");
-var a_addbtn = document.getElementById("add-button");
-var a_addspan = document.getElementById("add-close");
+var addmodal = document.getElementById("add-modal");
+var addbtn = document.getElementById("add-button");
+var addspan = document.getElementById("add-close");
 
-a_addbtn.onclick = function() {
-    a_addmodal.style.display = "block";
+addbtn.onclick = function() {
+    addmodal.style.display = "block";
+    loginmodal.style.display = "none";
+    forgotmodal.style.display = "none";
+    delmodal.style.display = "none";
 }
 
-a_addspan.onclick = function() {
-    a_addmodal.style.display = "none";
+addspan.onclick = function() {
+    addmodal.style.display = "none";
 }
 
 window.onclick = function(event) {
-    if (event.target == a_addmodal) {
-        a_addmodal.style.display = "none";
+    if (event.target == addmodal) {
+        addmodal.style.display = "none";
     }
 }
 
-var _a_username = document.getElementById("add-username");
-var _a_password = document.getElementById("add-password");
-var _a_repassword = document.getElementById("add-re-password");
-var _a_phone = document.getElementById("add-phone");
-var _a_email = document.getElementById("add-email");
-var _a_description = document.getElementById("add-description");
-var _a_isProvider = document.getElementById("add-is-provider");
-var _a_isAdmin = document.getElementById("add-is-admin");
+var _r_username = document.getElementById("add-username");
+var _r_password = document.getElementById("add-password");
+var _r_repassword = document.getElementById("add-re-password");
+var _r_phone = document.getElementById("add-phone");
+var _r_email = document.getElementById("add-email");
+var _r_description = document.getElementById("add-description");
+var _r_isProvider = document.getElementById("add-is-provider");
+var _r_isAdmin = document.getElementById("add-is-admin");
 
-var _a_username_v = false;
-var _a_password_v = false;
-var _a_phone_v = false;
-var _a_email_v = false;
+var _r_username_v = false;
+var _r_password_v = false;
+var _r_phone_v = false;
+var _r_email_v = false;
 
-_a_username.onchange = function() {
-    var text = _a_username.value;
+_r_username.onchange = function() {
+    var text = _r_username.value;
     if (!/^([a-zA-Z0-9\_\.]+)$/.test(text)) {
         document.getElementById("add-username-message").style = "visibility: visible; opacity: 1;";
-        _a_username_v = false;
+        _r_username_v = false;
     } else {
         document.getElementById("add-username-message").style = "";
-        _a_username_v = true;
+        _r_username_v = true;
     }
 }
 
-_a_repassword.onchange = function() {
-    var pwa = _a_password.value;
-    var apwa = _a_repassword.value;
-    if (pwa != apwa) {
+_r_repassword.onchange = function() {
+    var pw = _r_password.value;
+    var rpw = _r_repassword.value;
+    if (pw != rpw) {
         document.getElementById("add-re-password-message").style = "visibility: visible; opacity: 1;";
-        _a_password_v = false;
+        _r_password_v = false;
     } else {
         document.getElementById("add-re-password-message").style = "";
-        _a_password_v = true;
+        _r_password_v = true;
     }
 }
 
-_a_phone.onchange = function() {
-    var text = _a_phone.value;
+_r_phone.onchange = function() {
+    var text = _r_phone.value;
     if (!/^([0-9]{10})$/.test(text)) {
         document.getElementById("add-phone-message").style = "visibility: visible; opacity: 1;";
-        _a_phone_v = false;
+        _r_phone_v = false;
     } else {
         document.getElementById("add-phone-message").style = "";
-        _a_phone_v = true;
+        _r_phone_v = true;
     }
 }
 
-_a_email.onchange = function() {
-    var text = _a_email.value;
+_r_email.onchange = function() {
+    var text = _r_email.value;
     if (!/^([a-zA-Z0-9\_\.]+[\@][a-zA-Z0-9]+[\.][a-zA-Z]+)$/.test(text)) {
         document.getElementById("add-email-message").style = "visibility: visible; opacity: 1;";
-        _a_email_v = false;
+        _r_email_v = false;
     } else {
         document.getElementById("add-email-message").style = "";
-        _a_email_v = true;
+        _r_email_v = true;
     }
 }
 
-var _a_addsubmit = document.getElementById("add-submit");
-_a_addsubmit.onclick = function() {
-    if (!_a_username_v || !_a_password_v || !_a_phone_v || !_a_email_v) {
+var addsubmit = document.getElementById("add-submit");
+addsubmit.onclick = function() {
+    if (!_r_username_v || !_r_password_v || !_r_phone_v || !_r_email_v) {
         alert("Campurile sunt completate invalid.");
     } else {
         var userJSON = '{' +
-            '"username":"' + _a_username.value + '", ' +
-            '"password":"' + _a_password.value + '", ' +
-            '"phone":"' + _a_phone.value + '", ' +
-            '"email":"' + _a_email.value + '", ' +
-            '"description":"' + _a_description.value + '", ' +
+            '"username":"' + _r_username.value + '", ' +
+            '"password":"' + _r_password.value + '", ' +
+            '"phone":"' + _r_phone.value + '", ' +
+            '"email":"' + _r_email.value + '", ' +
+            '"description":"' + _r_description.value + '", ' +
             '"profile_picture_link":"http://localhost/images/avatar.jpg", ' +
-            '"isProvider":' + _a_isProvider.checked + ', ' +
-            '"isAdmin":' + _a_isAdmin.checked +
+            '"isProvider":' + _r_isProvider.checked + ', ' +
+            '"isAdmin":' + _r_isAdmin.checked +
         '}';
 
         const xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
                 if (Object.keys(this.responseText).length == 0) {
                     alert("Campurile sunt completate invalid");
                 } else {

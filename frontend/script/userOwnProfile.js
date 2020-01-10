@@ -8,11 +8,13 @@ function parseDate(date) {
 	return months[d.getMonth() - 1] + " " + d.getDate() + " " + d.getFullYear() + ", " + d.getHours() + ":" + d.getMinutes();
 }
 
-function listUser(user){
+function listUserPic(user){
+    var html =  '<img src="' + user.profilePictureLink + '" alt="" width = "100%" height = "300px"/>';
+    return html;
+}
 
-    var html = '<section>' +
-               '<img src="' + user.profilePictureLink + '" alt="" width = "100%" height = "300px"/>' +
-               '<button class="button fit">Chat</button>' +
+function listUser(user){
+    var html = '<a href="userViewOrders.php?userId=' + user.id + '" class="button fit">Vizualizare Comenzi</a>' + 
                '<header style="padding:20px">' +
                '<table style="width:100%">' +
                '<tr>' +
@@ -35,8 +37,7 @@ function listUser(user){
                '<td>' + user.email + '</td>' +
                '</tr>' +
                '</table>' +
-               '</header>' +
-               '</section>';
+               '</header>';
     return html;
 }
 
@@ -79,12 +80,12 @@ function listJobs(cvadruple) {
 	var html = "<article class='post'>" +
 		"<header>" + 
 			"<div class='title'>" +
-				"<h2>" + startingLocation + " -> " + destination + "</h2>" +
+				"<h2>"+  startingLocation + " -> " + destination + "</a></h2>" +
 				"<p>" + others + "<p>" +
 			"</div>" +
 			"<div class='meta'>" +
 				"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
-				"<a class='author'>" + 
+				"<a href='#' class='author'>" + 
 					"<span class='name'>" + user.username + "</span>" + 
 					"<img src='" + user.profilePictureLink + "' alt='' width='50px' height='50px'/>" + 
 				"</a>" +
@@ -96,11 +97,11 @@ function listJobs(cvadruple) {
 		"<p>" + job.description.substring(0, (job.description.length > 300 ? 300 : job.description.length)) + "</p>" +
 		"<footer>" +
 			"<ul class='actions'>" +
-				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>See offer</a></li>" +
+				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>Editeaza oferta</a></li>" +
 			"</ul>" + 
 			"<ul class='stats'>" +
-				"<li><a>" + job.tags.split(";")[0] + "</a></li>" +
-				"<li><a class='icon solid fa-star'>" + userRate + "</a></li>" +
+				"<li><a href='#'>" + job.tags.split(";")[0] + "</a></li>" +
+				"<li><a href='#' class='icon solid fa-star'>" + userRate + "</a></li>" +
 			"</ul>" +
 		"</footer>" +
 	"</article>";
@@ -118,11 +119,15 @@ function updateReviewHtml(item, index) {
 	document.getElementById("user_reviews").innerHTML += listReviews(item);
 }
 
+
 function clearUserHtml() {
-	document.getElementById("user_info").innerHTML = "";
+    document.getElementById("user_pic").innerHTML = "";
+    document.getElementById("user_info").innerHTML = "";
 }
 
+
 function updateUserHtml(item) {
+    document.getElementById("user_pic").innerHTML = listUserPic(item);
 	document.getElementById("user_info").innerHTML = listUser(item);
 }
 
@@ -247,7 +252,6 @@ if (this.readyState == 4 && this.status == 200) {
 				nextButton.classList.add("disabled");
 
 			jobList = JSON.parse(this.responseText);
-            console.log(jobList);
 			totalJobPages = jobList.length / itemsPerPage;
 			renderJobList(0);
 

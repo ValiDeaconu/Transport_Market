@@ -26,13 +26,6 @@ public class WalletController {
         walletService.addWallet(wallet);
     }
 
-
-    /*@GetMapping(path = "{id}")
-    public Wallet getWalletById(@PathVariable("id") int id) {
-        return walletService.getWalletByID(id).orElse(null);
-    }*/
-
-
     @GetMapping(path = "{id}")
     public List<Wallet> getAllWalletsForUserID(@PathVariable("id") int id) {
         return walletService.getAllWalletsForUserId(id);

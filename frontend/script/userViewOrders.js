@@ -10,9 +10,13 @@ function parseDate(date) {
 
 function listUser(user){
 
-    var html = '<section>' +
+    var html = '<section id="intro">' + 
                '<img src="' + user.profilePictureLink + '" alt="" width = "100%" height = "300px"/>' +
-               '<button class="button fit">Chat</button>' +
+               '<a id="edit-button" class="button fit">Editare profil</a>' +
+               '<button class="button fit">Adaugare serviciu</button>' + 
+               '<a href="userOwnProfile.php?userId=' + user.id + '" class="button fit">Vizualizare Servicii</a>' +
+               '<button class="button fit">Depunere bani</button>' +
+               '<button class="button fit">Extragere bani</button>' +
                '<header style="padding:20px">' +
                '<table style="width:100%">' +
                '<tr>' +
@@ -53,11 +57,11 @@ function listReviews(review) {
 }
 
 
-function listJobs(cvadruple) {
-	var job = cvadruple.first;
-	var user = cvadruple.second;
-	var userRate = cvadruple.third;
-	var photos = cvadruple.fourth;
+function listOrder(tuple) {
+	var job = tuple.first;
+    var photos = tuple.second;
+	var user = tuple.third;
+	
 
 	if (photos.length == 0) {
 		photos.push("http://localhost/images/exemple_car.jpg");
@@ -79,12 +83,12 @@ function listJobs(cvadruple) {
 	var html = "<article class='post'>" +
 		"<header>" + 
 			"<div class='title'>" +
-				"<h2>" + startingLocation + " -> " + destination + "</h2>" +
+				"<h2>"+  startingLocation + " -> " + destination + "</a></h2>" +
 				"<p>" + others + "<p>" +
 			"</div>" +
 			"<div class='meta'>" +
 				"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
-				"<a class='author'>" + 
+				"<a href='#' class='author'>" + 
 					"<span class='name'>" + user.username + "</span>" + 
 					"<img src='" + user.profilePictureLink + "' alt='' width='50px' height='50px'/>" + 
 				"</a>" +
@@ -96,11 +100,10 @@ function listJobs(cvadruple) {
 		"<p>" + job.description.substring(0, (job.description.length > 300 ? 300 : job.description.length)) + "</p>" +
 		"<footer>" +
 			"<ul class='actions'>" +
-				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>See offer</a></li>" +
+				"<li><a href='jobOffer.php?jobId=" + job.id + "' class='button large'>Mai multe detalii</a></li>" +
 			"</ul>" + 
 			"<ul class='stats'>" +
-				"<li><a>" + job.tags.split(";")[0] + "</a></li>" +
-				"<li><a class='icon solid fa-star'>" + userRate + "</a></li>" +
+				"<li><a href='#'>" + job.tags.split(";")[0] + "</a></li>" +
 			"</ul>" +
 		"</footer>" +
 	"</article>";
@@ -126,12 +129,12 @@ function updateUserHtml(item) {
 	document.getElementById("user_info").innerHTML = listUser(item);
 }
 
-function clearJobHtml() {
-	document.getElementById("job_posts").innerHTML = "";
+function clearOrderHtml() {
+	document.getElementById("order_posts").innerHTML = "";
 }
 
-function updateJobHtml(item, index) {
-	document.getElementById("job_posts").innerHTML += listJobs(item);
+function updateOrderHtml(item, index) {
+	document.getElementById("order_posts").innerHTML += listOrder(item);
 }
 
 
@@ -166,7 +169,7 @@ function prevReviewPressed() {
 }
 
 function nextPagePressed() {
-	jobPage++;
+	orderPage++;
 	
 	var prevButton = document.getElementById("pagination_prev_button");
 	var nextButton = document.getElementById("pagination_next_button");
@@ -174,14 +177,14 @@ function nextPagePressed() {
 	if (prevButton.classList.contains("disabled"))
 		prevButton.classList.remove("disabled");
 
-	if (jobPage == totalJobPages - 1) 
+	if (orderPage == totalOrderPages - 1) 
 		nextButton.classList.add("disabled");
 
-	renderJobList(jobPage);
+	renderOrderList(orderPage);
 }
 
 function prevPagePressed() {
-	jobPage--;
+	orderPage--;
 	
 	var prevButton = document.getElementById("pagination_prev_button");
 	var nextButton = document.getElementById("pagination_next_button");
@@ -189,17 +192,17 @@ function prevPagePressed() {
 	if (nextButton.classList.contains("disabled"))
 		nextButton.classList.remove("disabled");
 
-	if (jobPage == 0) 
+	if (orderPage == 0) 
 		prevButton.classList.add("disabled");
 
-	renderJobList(jobPage);
+	renderOrderList(orderPage);
 }
 
-function renderJobList(pageIndex) {
-	clearJobHtml();
-	jobList.forEach(function (value, index) {
+function renderOrderList(pageIndex) {
+	clearOrderHtml();
+	orderList.forEach(function (value, index) {
 		if (index >= itemsPerPage * pageIndex && index < itemsPerPage * pageIndex + itemsPerPage) {
-			updateJobHtml(value);
+			updateOrderHtml(value);
 		}
 	});
 }
@@ -220,11 +223,11 @@ function renderReviewList(pageIndex) {
 }
 const itemsPerPage = 1;
 var totalReviewPages = 0;
-var totalJobPages = 0;
+var totalOrderPages = 0;
 var reviewPage = 0;
-var jobPage = 0;
+var orderPage = 0;
 var reviewList = [];
-var jobList = [];
+var orderList = [];
 var userInfo;
 
 
@@ -246,12 +249,11 @@ if (this.readyState == 4 && this.status == 200) {
 			if (!nextButton.classList.contains("disabled")) 
 				nextButton.classList.add("disabled");
 
-			jobList = JSON.parse(this.responseText);
-            console.log(jobList);
-			totalJobPages = jobList.length / itemsPerPage;
-			renderJobList(0);
+			orderList = JSON.parse(this.responseText);
+			totalOrderPages = orderList.length / itemsPerPage;
+			renderOrderList(0);
 
-			if (totalJobPages > 1) {
+			if (totalOrderPages > 1) {
 				nextButton.classList.remove("disabled");
 			}
 		}
@@ -295,7 +297,7 @@ xhrUserReviews.onreadystatechange = function() {
 }
 
 
-xhrPosts.open('get', SERVER_LINK + '/api/v1/job/jobsForUserId/' + userId, true);
+xhrPosts.open('get', SERVER_LINK + '/api/v1/order/userId/' + userId, true);
 xhrPosts.send();
 xhrUserReviews.open('get', SERVER_LINK + '/api/v1/reviews/' + userId, true);
 xhrUserReviews.send();

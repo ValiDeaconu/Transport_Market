@@ -20,7 +20,7 @@ public class Wallet {
         this.userId = userId;
     }
 
-    public int getId(){return this.id;}
-    public int getBalance(){return this.balance;}
-    public int getUserId(){return this.userId;}
+    public int getId(){return id;}
+    public int getBalance(){return balance;}
+    public int getUserId(){return userId;}
 }

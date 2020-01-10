@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `transport_market`.`users` (
   `password` VARCHAR(256) NOT NULL,
   `phone` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(45) NOT NULL,
+  `description` TEXT NOT NULL,
   `profile_picture_link` VARCHAR(512) NOT NULL,
   `isProvider` TINYINT(1) NOT NULL DEFAULT False,
   `isAdmin` TINYINT(1) NOT NULL DEFAULT False,

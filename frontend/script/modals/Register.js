@@ -7,6 +7,7 @@ registerbtn.onclick = function() {
     registermodal.style.display = "block";
     loginmodal.style.display = "none";
     forgotmodal.style.display = "none";
+    delmodal.style.display = "none";
 }
 registerspan.onclick = function() {
     registermodal.style.display = "none";

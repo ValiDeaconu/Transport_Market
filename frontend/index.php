@@ -8,8 +8,8 @@
 
 		<!-- Pagination -->
 		<ul class="actions pagination">
-			<li><a id="pagination_prev_button" class="disabled button large previous" onclick="prevPagePressed()">Previous Page</a></li>
-			<li><a id="pagination_next_button" class="disabled button large next" onclick="nextPagePressed()">Next Page</a></li>
+			<li><a id="pagination_prev_button" class="disabled button large previous">Previous Page</a></li>
+			<li><a id="pagination_next_button" class="disabled button large next">Next Page</a></li>
 		</ul>
 	</div>
 
@@ -55,7 +55,7 @@
 					<li>
 						<div class="col-12">
 							<ul class="actions">
-								<li><input type="submit" value="Filter" class="button fit" onclick="filterResults()" /></li>
+								<li><input type="submit" value="Filter" class="button fit" id="filter-submit" /></li>
 							</ul>
 						</div>
 					</li>
@@ -75,6 +75,6 @@
 
 <?php include 'include/sidebar_footer.php'; ?>
 
-<script src="script/mainpage.js"></script>
+<script src="script/MainPage.js"></script>
 
 <?php include 'include/footer.php'; ?>

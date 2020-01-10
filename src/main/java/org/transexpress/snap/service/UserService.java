@@ -12,8 +12,10 @@ import org.transexpress.snap.model.User;
 import org.transexpress.snap.model.UserReview;
 
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -46,10 +48,45 @@ public class UserService {
         return userDal.selectAllUsers();
     }
 
+    public List<User> getAllCustomers(){
+        List<User> allCostumers = userDal.selectAllUsers();
+
+        if (allCostumers == null)
+                return new ArrayList<>();
+
+        List<User> result = allCostumers.stream()
+                .filter(o -> !o.isProvider())
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
+    public List<User> getAllProviders(){
+        List<User> allProviders = userDal.selectAllUsers();
+
+        if (allProviders == null)
+            return new ArrayList<>();
+
+        List<User> result = allProviders.stream()
+                .filter(User::isProvider)
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
     public Optional<User> getUserByID(int id) {
         if (!Checker.getInstance().checkId(id))
             return Optional.empty();
         return userDal.selectUserByID(id);
+    }
+
+    public Optional<User> getUserByUsername(String username){
+        Optional<User> result = userDal.selectUserByName(username);
+
+        if ( result == null)
+            return Optional.empty();
+
+        return result;
     }
 
         public Optional<User> verifyUser(String username, String password) {
@@ -64,6 +101,10 @@ public class UserService {
             return -1;
 
         return userDal.deleteUserByID(id);
+    }
+
+    public int deleteUserByUsername(String username){
+        return userDal.deleteUserByUsername(username);
     }
 
     public ResponseMessage updateUser(int id, User newUser) {

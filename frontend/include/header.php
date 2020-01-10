@@ -43,11 +43,11 @@
                 <section id="menu">
 
                     <!-- Search -->
-                        <section id="menu-search-block" style="display: none;">
-                            <div class="searchform">
-                                <input type="text" placeholder="Search" id="menu-search" />
-                            </div>
-                        </section>
+                    <section id="menu-search-block" style="display: none;">
+                        <div class="searchform">
+                            <input type="text" placeholder="Search" id="menu-search" />
+                        </div>
+                    </section>
 
                     <!-- Actions -->
                     <section>

@@ -107,15 +107,17 @@ public class UserService {
         return userDal.deleteUserByUsername(username);
     }
 
-    public int updateUser(int id, User newUser) {
+    public ResponseMessage updateUser(int id, User newUser) {
         Checker checker = Checker.getInstance();
 
         if (!checker.checkId(id) || !newUser.isWellFormed())
-            return -1;
+            return new ResponseMessage("User is not well formed.", -1);
 
         User bracedUser = braceUser(newUser);
 
-        return userDal.updateUserByID(id, bracedUser);
+        if (userDal.updateUserByID(id, bracedUser) != 1)
+            return new ResponseMessage("Database error", -1);
+        return new ResponseMessage("User updated successfully", 0);
     }
 
     private User braceUser(User user) {

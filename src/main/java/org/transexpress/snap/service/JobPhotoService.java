@@ -3,6 +3,7 @@ package org.transexpress.snap.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.JobPhotoDal;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.JobPhoto;
 
 import java.util.ArrayList;
@@ -17,8 +18,16 @@ public class JobPhotoService {
         this.jobPhotoDal = jobPhotoDal;
     }
 
-    public int addJobPhotos(JobPhoto jobPhoto){
-        return jobPhotoDal.insertJobPhoto(jobPhoto);
+    public ResponseMessage addJobPhotos(JobPhoto jobPhoto){
+        if (jobPhotoDal.insertJobPhoto(jobPhoto) != 1)
+            return new ResponseMessage("Database error", -1);
+        else return new ResponseMessage("JobPhoto inserted successfully", 0);
+    }
+
+    public ResponseMessage addJobPhotoAsStr(JobPhoto jobphoto){
+        if(jobPhotoDal.insertJobPhotoAsStr(jobphoto.getLink(), jobphoto.getJobId()) != 1){
+            return new ResponseMessage("Database error", -1);
+        } else return new ResponseMessage("JobPhoto inserted successfully", 0);
     }
 
     public int removeJobPhoto(int id){

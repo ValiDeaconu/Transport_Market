@@ -4,7 +4,9 @@
 const urlParams = new URLSearchParams(window.location.search);
 var jobId = urlParams.get("jobId")
 
-var job = [];
+var job;
+var jobDetailsFirst;
+var priceHtml;
 
 function parseDate(date) {
 	var d = new Date(date);
@@ -61,6 +63,12 @@ function listJobDetails(cvadruple) {
     for (var i = 0; i < tags.length; ++i){
         tagsHtml += "<li><a href='#'>" + tags[i] + "</a></li>";
     }
+    
+    var priceAfterSale = 0;
+    if (job.sale > 0){
+        priceAfterSale = job.price - ((job.sale / 100) * job.price);
+    }
+    priceHtml = (job.sale > 0) ?  ("<del>" + job.price + "</del>" + "<ins>" + priceAfterSale + "</ins") : job.price;
 	
 	var html = "<article class='post'>" +
 		"<header>" + 
@@ -69,7 +77,7 @@ function listJobDetails(cvadruple) {
 			"</div>" +
 			"<div class='meta'>" +
 				"<time class='published' datetime='" + parseDate(job.postDate) + "'>" + parseDate(job.postDate) + "</time>" +
-				"<a href='userProfile.php?userId=" + user.id + "' class='author'>" + 
+				"<a href='#' class='author'>" + 
 					"<span class='name'>" + user.username + "</span>" + 
 					"<img src='" + user.profilePictureLink + "' alt='' width='50px' height='50px'/>" + 
 				"</a>" +
@@ -85,7 +93,7 @@ function listJobDetails(cvadruple) {
         "</tr>" +
         "<tr>" +
             "<th>Pret</th>" +
-            "<td>" + job.price + "</td>" +
+            "<td>" + priceHtml + "</td>" +
         "</tr>" +
         "<tr>" +
             "<th>Data plecarii</th>" +
@@ -97,12 +105,12 @@ function listJobDetails(cvadruple) {
         "</tr>" +
         "</table>" +
 		"<footer>" +
-			
+			"<ul class='actions'>" +
+				"<li><button onclick='addOrder()'>Cumpara</button></li>" +
+			"</ul>" + 
 			"<ul class='stats'>" +
 				tagsHtml +
 				"<li><a href='#' class='icon solid fa-star'>" + userRate + "</a></li>" +
-				"<li><a>" + job.tags.split(";")[0] + "</a></li>" +
-				"<li><a class='icon solid fa-star'>" + userRate + "</a></li>" +
 			"</ul>" +
 		"</footer>" +
 	"</article>";
@@ -129,6 +137,100 @@ function renderJob() {
     updateHtml(job);
 }
 
+
+function addOrder(){
+        var authUser = AuthManager.getAuthentificatedUser();
+        if (authUser == null)
+            console.log("Niciun user autentificat.");
+        else {
+            var orderJSON = '{' +
+                '"userId":' + authUser.id + ', ' +
+                '"jobId":' + job.first.id +
+                '}';
+            console.log(orderJSON);
+            const xhrOrd = new XMLHttpRequest();
+
+            xhrOrd.onreadystatechange = function() {
+                console.log(this.readyState, this.status);
+                if (this.readyState == 4 && this.status == 200) {
+                    if (Object.keys(this.responseText).length == 0) {
+                        alert("Campurile sunt completate invalid");
+                    } else {
+                        var response = JSON.parse(this.responseText);
+                        if (response.code != 0) {
+                            alert("Server response: " + response.message);
+                        } else {
+                           alert("Comanda adaugata cu succes!.");    
+                        }
+                    }
+                } else if (this.status == 400) {
+                        console.log(this.responseText);
+                }
+            }
+
+            xhrOrd.open('post', SERVER_LINK + "/api/v1/order", true);
+            xhrOrd.setRequestHeader("Accept", "application/json");
+            xhrOrd.setRequestHeader("Content-type", "application/json");
+            xhrOrd.send(orderJSON);
+            var extrJSON = '{' +
+                '"balance":' + priceHtml + ', ' +
+                '"userId":' + authUser.id +
+                '}';
+            
+            const xhrExtr = new XMLHttpRequest();
+
+            xhrExtr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (Object.keys(this.responseText).length == 0) {
+                        alert("Campurile sunt completate invalid");
+                    } else {
+                        var response = JSON.parse(this.responseText);
+                        if (response.code != 0) {
+                            alert("Server response: " + response.message);
+                        } else {
+                           alert("Cont creat cu succes! Te poti autentifica.");    
+                        }
+                    }
+                } else if (this.status == 400) {
+                        console.log(this.responseText);
+                }
+            }
+
+            xhrExtr.open('put', SERVER_LINK + "/api/v1/wallet/extragere/", true);
+            xhrExtr.setRequestHeader("Accept", "application/json");
+            xhrExtr.setRequestHeader("Content-type", "application/json");
+            xhrExtr.send(extrJSON);
+             var depJSON = '{' +
+                '"balance":' + priceHtml + ', ' +
+                '"userId":' + job.first.ownerId +
+                '}';
+            
+            const xhrDep = new XMLHttpRequest();
+
+            xhrDep.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (Object.keys(this.responseText).length == 0) {
+                        alert("Campurile sunt completate invalid");
+                    } else {
+                        var response = JSON.parse(this.responseText);
+                        if (response.code != 0) {
+                            alert("Server response: " + response.message);
+                        } else {
+                           alert("Cont creat cu succes! Te poti autentifica.");    
+                        }
+                    }
+                } else if (this.status == 400) {
+                        console.log(this.responseText);
+                }
+            }
+
+            xhrDep.open('put', SERVER_LINK + "/api/v1/wallet/depunere/" + job.first.ownerId, true);
+            xhrDep.setRequestHeader("Accept", "application/json");
+            xhrDep.setRequestHeader("Content-type", "application/json");
+            xhrDep.send(depJSON);
+        }
+    
+}
 const xhr = new XMLHttpRequest();
 
 xhr.onreadystatechange = function() {
@@ -137,6 +239,7 @@ xhr.onreadystatechange = function() {
 			document.getElementById("main").innerHTML = "<h2>Could not fetch any service.</h2>";	
 		} else {
 			job = JSON.parse(this.responseText);
+            jobDetailsFirst = job.first;
 			renderJob();
 		}
 	}

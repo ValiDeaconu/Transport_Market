@@ -3,6 +3,7 @@ package org.transexpress.snap.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.WalletDal;
+import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.Wallet;
 
 import java.util.List;
@@ -30,11 +31,40 @@ public class WalletService {
     public int updateWalletByID(int id, Wallet wallet){return walletDal.updateWallet(id, wallet);}
 
     public List<Wallet> getAllWalletsForUserId(int userId){
-        List<Wallet> allWallets= walletDal.selectAllWallets();
+        List<Wallet> wallets = walletDal.selectAllWallets();
+        List<Wallet> allWalletsForUser = wallets.stream().
+                filter(w -> w.getUserId() == userId).
+                collect(Collectors.toList());
+        return allWalletsForUser;
+    }
 
-        List<Wallet> result = allWallets.stream()
-                .filter(o -> o.getUserId() == userId)
-                .collect(Collectors.toList());
-        return result;
+    public ResponseMessage updateDeposit(int userId, int balance){
+        List<Wallet> wallet = getAllWalletsForUserId(userId);
+        Wallet walletToUpdate;
+        int code = 0;
+        if (wallet.size() == 0){
+            walletToUpdate = new Wallet(0, balance, userId);
+            code = addWallet(walletToUpdate);
+            if (code == 1) return new ResponseMessage("Depunere reusita!", 0);
+            else return new ResponseMessage("Database error", -1);
+        }
+        walletToUpdate = new Wallet(wallet.get(0).getId(), wallet.get(0).getBalance() + balance, userId);
+        if (updateWalletByID(walletToUpdate.getId(), walletToUpdate) != 1)
+            return new ResponseMessage("Database error", -1);
+        else return new ResponseMessage("Depunere completa", 0);
+
+    }
+
+    public ResponseMessage updateWithdraw(int userId, int balance){
+        List<Wallet> wallet = getAllWalletsForUserId(userId);
+        if (wallet.size() == 0)
+            return new ResponseMessage("Fonduri insuficiente.",-1);
+        Wallet walletToUpdate = new Wallet(wallet.get(0).getId(),
+                wallet.get(0).getBalance() - balance,
+                userId);
+        if (updateWalletByID(walletToUpdate.getId(), walletToUpdate) != 1)
+            return new ResponseMessage("Database error", -1);
+        else return new ResponseMessage("Extragere completa");
+
     }
 }

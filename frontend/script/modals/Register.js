@@ -1,121 +1,111 @@
-// REGISTER MODAL
-var registermodal = document.getElementById("register-modal");
-var registerbtn = document.getElementById("register-button");
-var registerspan = document.getElementById("register-close");
+/**
+ * Script behind Login Modal
+ * Global vars used: _rm_
+ * @author Valentin Deaconu
+ */ 
+var _rm_ = new ModalWrapper("register-modal", "register-button", "register-close");
 
-registerbtn.onclick = function() {
-    registermodal.style.display = "block";
-    loginmodal.style.display = "none";
-    forgotmodal.style.display = "none";
-    delmodal.style.display = "none";
-}
-registerspan.onclick = function() {
-    registermodal.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == registermodal) {
-        registermodal.style.display = "none";
-    }
-}	
+_rm_.addFormItem("register-username", function() {
+    var text = document.getElementById("register-username").value;
+    _rm_.cache["username"] = text;
 
-var _r_username = document.getElementById("register-username");
-var _r_password = document.getElementById("register-password");
-var _r_repassword = document.getElementById("register-re-password");
-var _r_phone = document.getElementById("register-phone");
-var _r_email = document.getElementById("register-email");
-var _r_description = document.getElementById("register-description");
-var _r_isProvider = document.getElementById("register-is-provider");
-
-var _r_username_v = false;
-var _r_password_v = false;
-var _r_phone_v = false;
-var _r_email_v = false;
-
-_r_username.onchange = function() {
-    var text = _r_username.value;
     if (!/^([a-zA-Z0-9\_\.]+)$/.test(text)) {
         document.getElementById("register-username-message").style = "visibility: visible; opacity: 1;";
-        _r_username_v = false;
+        
+        _rm_.cache["v_username"] = false;
     } else {
         document.getElementById("register-username-message").style = "";
-        _r_username_v = true;
+        
+        _rm_.cache["v_username"] = true;
     }
-}
+});
 
-_r_repassword.onchange = function() {
-    var pw = _r_password.value;
-    var rpw = _r_repassword.value;
+_rm_.addFormItem("register-re-password", function() {
+    var pw = document.getElementById("register-password").value;
+    var rpw = document.getElementById("register-re-password").value;
+
+    _rm_.cache["password"] = pw;
+
     if (pw != rpw) {
         document.getElementById("register-re-password-message").style = "visibility: visible; opacity: 1;";
-        _r_password_v = false;
+        
+        _rm_.cache["v_password"] = false;
     } else {
         document.getElementById("register-re-password-message").style = "";
-        _r_password_v = true;
+        
+        _rm_.cache["v_password"] = true;
     }
-}
+});
 
-_r_phone.onchange = function() {
-    var text = _r_phone.value;
+_rm_.addFormItem("register-phone", function() {
+    var text = document.getElementById("register-phone").value;
+    _rm_.cache["phone"] = text;
+
     if (!/^([0-9]{10})$/.test(text)) {
         document.getElementById("register-phone-message").style = "visibility: visible; opacity: 1;";
-        _r_phone_v = false;
+        
+        _rm_.cache["v_phone"] = false;
     } else {
         document.getElementById("register-phone-message").style = "";
-        _r_phone_v = true;
+        
+        _rm_.cache["v_phone"] = true;
     }
-}
+});
 
-_r_email.onchange = function() {
-    var text = _r_email.value;
+_rm_.addFormItem("register-email", function() {
+    var text = document.getElementById("register-email").value;
+    _rm_.cache["email"] = text;
+
     if (!/^([a-zA-Z0-9\_\.]+[\@][a-zA-Z0-9]+[\.][a-zA-Z]+)$/.test(text)) {
         document.getElementById("register-email-message").style = "visibility: visible; opacity: 1;";
-        _r_email_v = false;
+        
+        _rm_.cache["v_email"] = false;
     } else {
         document.getElementById("register-email-message").style = "";
-        _r_email_v = true;
+        
+        _rm_.cache["v_email"] = true;
     }
-}
+});
 
-var registersubmit = document.getElementById("register-submit");
-registersubmit.onclick = function() {
-    if (!_r_username_v || !_r_password_v || !_r_phone_v || !_r_email_v) {
+_rm_.addFormItem("register-description", function() {
+    _rm_.cache["description"] = document.getElementById("register-description").value;
+});
+
+_rm_.addFormItem("register-is-provider", function() {
+    _rm_.cache["isProvider"] = document.getElementById("register-is-provider").checked;
+});
+
+_rm_.addButtonItem("register-submit", function() {
+    if (!_rm_.cache["v_username"] || !_rm_.cache["v_password"] || !_rm_.cache["v_phone"] || !_rm_.cache["v_email"]) {
         alert("Campurile sunt completate invalid.");
     } else {
         var userJSON = '{' +
-            '"username":"' + _r_username.value + '", ' +
-            '"password":"' + _r_password.value + '", ' +
-            '"phone":"' + _r_phone.value + '", ' +
-            '"email":"' + _r_email.value + '", ' +
-            '"description":"' + _r_description.value + '", ' +
+            '"username":"' + _rm_.cache["username"] + '", ' +
+            '"password":"' + _rm_.cache["password"] + '", ' +
+            '"phone":"' + _rm_.cache["phone"] + '", ' +
+            '"email":"' + _rm_.cache["email"] + '", ' +
+            '"description":"' + _rm_.cache["description"] + '", ' +
             '"profile_picture_link":"http://localhost/images/avatar.jpg", ' +
-            '"isProvider":' + _r_isProvider.checked + ', ' +
+            '"isProvider":' + _rm_.cache["isProvider"] + ', ' +
             '"isAdmin":false ' +
         '}';
 
-        const xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                if (Object.keys(this.responseText).length == 0) {
-                    alert("Campurile sunt completate invalid");
+        const sr = new ServerRequest(function(responseText) {
+            if (Object.keys(responseText).length == 0) {
+                alert("Campurile sunt completate invalid");
+            } else {
+                var response = JSON.parse(responseText);
+                if (response.code != 0) {
+                    alert("Server response: " + response.message);
                 } else {
-                    var response = JSON.parse(this.responseText);
-                    if (response.code != 0) {
-                        alert("Server response: " + response.message);
-                    } else {
-                       alert("Cont creat cu succes! Te poti autentifica.");    
-                    }
+                   alert("Cont creat cu succes! Te poti autentifica.");    
                 }
-            } else if (this.status == 400) {
-                var response = this.responseText;
-                var message = response.errors[0].defaultMessage;
-                alert("Server response: " + message);
             }
-        }
+        }, function (status, responseText) {
+            console.log("HTTPStatus: " + status);
+            console.log("Server response: " + responseText);
+        });
 
-        xhr.open('post', SERVER_LINK + "/api/v1/user/", true);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(userJSON);
+        sr.send(RequestMethod.POST, "/api/v1/user/", userJSON);
     }
-}
+});

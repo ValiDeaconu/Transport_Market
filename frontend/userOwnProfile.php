@@ -16,16 +16,18 @@
 <?php include 'include/sidebar_header.php'; ?>
     <!-- Intro -->
         <section>
-            
            <div id = "user_pic">
            </div>
+
             <div>
-            <a id="edit-button" class="button fit">Editare profil</a>
-            <a id="add-job-button" class="button fit">Adaugare serviciu</a>     
-            <!--<button class="button fit">Vizualizare comenzi</button>-->
-             <a id="deposit-button" class="button fit">Depunere bani</a>
-             <a id="withdraw-button" class="button fit">Extragere bani</a>
-             </div>
+                <a id="edit-button" class="button fit">Editare profil</a>
+                <a id="add-job-button" class="button fit">Adaugare serviciu</a>     
+                <a id="deposit-button" class="button fit">Depunere bani</a>
+                <a id="withdraw-button" class="button fit">Extragere bani</a>
+                <a id="list-my-jobs" class="button fit" style="display: none;">Vizualizare oferte proprii</a>
+                <a id="list-my-orders" class="button fit" style="display: block;">Vizualizare comenzi</a>
+            </div>
+           
            <div id = "user_info">
            </div>
         </section>
@@ -45,5 +47,9 @@
 <?php include 'include/sidebar_footer.php'; ?>
 
 	<script src="script/userOwnProfile.js"></script>
+    <script src="script/modals/userEditProfile.js"></script>
+    <script src="script/modals/userAddJob.js"></script>
+    <script src="script/modals/userDeposit.js"></script>
+    <script src="script/modals/userWithdraw.js"></script>
 
 <?php include 'include/footer.php'; ?> 

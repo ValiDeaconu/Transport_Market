@@ -61,10 +61,13 @@ public class OrderService {
         List<Order> allOrdersForUser = allOrders.stream()
                 .filter(o -> o.getUserId() == userId)
                 .collect(Collectors.toList());
+
         User user = userService.getUserByID(userId).get();
         User userToDisplay;
+
         List<Tuple<Job, List<JobPhoto>, User>> result = new ArrayList<>();
-        if (user.isProvider()){
+
+        if (user.isProvider()) {
             for (Order order : allOrders){
                 Job job = jobService.getJobByID(order.getJobId()).getFirst();
                 if (job.getOwnerId() == userId){
@@ -76,6 +79,7 @@ public class OrderService {
             }
             return result;
         }
+
         for(Order order : allOrdersForUser){
                 userToDisplay = jobService.getJobByID(order.getJobId()).getSecond();
                 result.add(new Tuple<Job, List<JobPhoto>, User>(jobService.getJobByID(order.getJobId()).getFirst(),
@@ -83,6 +87,7 @@ public class OrderService {
                         userToDisplay));
 
         }
+
         return result;
     }
 

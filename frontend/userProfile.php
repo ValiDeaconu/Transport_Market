@@ -28,12 +28,13 @@
 
         </ul>
         <ul class = "actions">
-                <li><a href='#' class='button medium'>Leave review</a></li>
+                <li><a id="review-button" class='button medium'>Leave review</a></li>
         </ul>
     </section>
 
 <?php include 'include/sidebar_footer.php'; ?>
 
 	<script src="script/userProfile.js"></script>
+    <script src="script/modals/leaveReview.js"></script>
 
 <?php include 'include/footer.php'; ?> 

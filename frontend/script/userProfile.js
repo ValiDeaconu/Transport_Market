@@ -12,7 +12,7 @@ function listUser(user){
 
     var html = '<section id="intro">' + 
                '<img src="' + user.profilePictureLink + '" alt="" width = "100%" height = "300px"/>' +
-               '<button class="button fit">Chat</button>' +
+               '<a href="chat.php?userId=' + user.id + '" class="button fit">Chat</a>' +
                '<header style="padding:20px">' +
                '<table style="width:100%">' +
                '<tr>' +

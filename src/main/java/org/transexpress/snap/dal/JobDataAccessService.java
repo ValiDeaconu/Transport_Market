@@ -29,6 +29,7 @@ public class JobDataAccessService implements JobDal {
         catch (SQLException e) {
             System.err.println("Operation failed: " + e);
         }
+
         int lastId = 0;
         try {
             String str = "SELECT id FROM jobs where (description='" +job.getDescription() +
@@ -36,12 +37,10 @@ public class JobDataAccessService implements JobDal {
                     "' and postDate='" + job.getPostDate() +"' and departureDate = '" + job.getDepartureDate() +
                     "' and arrivalDate = '" + job.getArrivalDate() + "' and sale = " + job.getSale() + " and ownerId =" +
                     job.getOwnerId() +");";
-            System.out.println(str);
             PreparedStatement ps = handle.prepareStatement(str);
             ResultSet rst = ps.executeQuery();
-            ResultSetMetaData rsmd = rst.getMetaData();
 
-            while (rst.next()) {
+            if (rst.next()) {
                 int id = rst.getInt("id");
 
                 lastId = id;
@@ -54,7 +53,6 @@ public class JobDataAccessService implements JobDal {
         } catch (Exception e) {
             System.err.println("Exception: " + e);
         }
-
 
         DatabaseManager.close(handle);
 

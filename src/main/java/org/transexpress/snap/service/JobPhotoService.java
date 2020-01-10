@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.transexpress.snap.dal.JobPhotoDal;
 import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.JobPhoto;
+import org.transexpress.snap.model.JobPhotos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,26 @@ public class JobPhotoService {
         else return new ResponseMessage("JobPhoto inserted successfully", 0);
     }
 
-    public ResponseMessage addJobPhotoAsStr(JobPhoto jobphoto){
-        if(jobPhotoDal.insertJobPhotoAsStr(jobphoto.getLink(), jobphoto.getJobId()) != 1){
-            return new ResponseMessage("Database error", -1);
-        } else return new ResponseMessage("JobPhoto inserted successfully", 0);
+    public ResponseMessage addJobPhotos(JobPhotos jobPhotos) {
+        int successfullyAdded = 0;
+
+        String[] links = jobPhotos.getLinks().split(";");
+
+        for (String link : links) {
+            System.out.println(link);
+
+            JobPhoto jobPhoto = new JobPhoto(-1, link, jobPhotos.getJobId());
+
+            if (jobPhotoDal.insertJobPhoto(jobPhoto) != 1) {
+                break;
+            }
+
+            successfullyAdded++;
+        }
+
+        if (successfullyAdded < links.length)
+            return new ResponseMessage("Only " + successfullyAdded + " photos were added", -1);
+        return new ResponseMessage(successfullyAdded + " photos were inserted successfully", 0);
     }
 
     public int removeJobPhoto(int id){

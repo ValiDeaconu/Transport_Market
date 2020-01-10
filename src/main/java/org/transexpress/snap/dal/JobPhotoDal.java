@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface JobPhotoDal {
     int insertJobPhoto(JobPhoto jobPhoto);
-    int deleteJobPhoto(int id);
-    List<JobPhoto> selectAllJobPhotos();
 
-    int insertJobPhotoAsStr(String links, int jobId);
+    int deleteJobPhoto(int id);
+
+    List<JobPhoto> selectAllJobPhotos();
 }

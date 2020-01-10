@@ -32,16 +32,6 @@ public class JobPhotoDataAccessService implements JobPhotoDal {
     }
 
     @Override
-    public int insertJobPhotoAsStr(String links, int jobId) {
-        int code = 0;
-        String[] linksParsed = links.split(";");
-        for (int i = 0; i < linksParsed.length; i++){
-            code = insertJobPhoto(new JobPhoto(0, linksParsed[i], jobId));
-        }
-        return code;
-    }
-
-    @Override
     public int deleteJobPhoto(int id) {
         Connection handle = DatabaseManager.connect();
 

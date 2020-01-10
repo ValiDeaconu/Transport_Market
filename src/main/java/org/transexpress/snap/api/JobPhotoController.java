@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.JobPhoto;
+import org.transexpress.snap.model.JobPhotos;
 import org.transexpress.snap.service.JobPhotoService;
 
 import javax.validation.Valid;
@@ -22,14 +23,8 @@ public class JobPhotoController {
     }
 
     @PostMapping
-    public ResponseMessage addJobPhoto(@Valid @NonNull @RequestBody JobPhoto jobPhoto) {
-        return jobPhotoService.addJobPhotos(jobPhoto);
-    }
-
-    @PostMapping(path = "{unId}")
-    public ResponseMessage addJobPhotoAsStr(@PathVariable ("unId") int cvNuCOnt, @RequestBody JobPhoto jobphoto){
-        System.out.println(jobphoto.getLink());
-        return jobPhotoService.addJobPhotoAsStr(jobphoto);
+    public ResponseMessage addJobPhotos(@RequestBody JobPhotos jobPhotos) {
+        return jobPhotoService.addJobPhotos(jobPhotos);
     }
 
     @DeleteMapping(path = "{id}")

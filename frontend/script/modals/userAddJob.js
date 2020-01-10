@@ -51,7 +51,6 @@ var jobRoute;
 var routeList;
 var jobJSON;
 var lastId;
-var g2g = false;
 addJobsubmit.onclick = function() {
     
     if ( !_aj_price_v) {
@@ -90,50 +89,47 @@ addJobsubmit.onclick = function() {
             
             jobPhotos = "";
             photosList = _aj_links.value.split("\n");
-            for(var i = 0; i < routeList.length - 1; ++i){
+            for(var i = 0; i < photosList.length - 1; ++i){
                 jobPhotos += photosList[i] + ";";
             }
             jobPhotos += photosList[photosList.length - 1];
 
-
-             jobJSON = '{' +
-            '"description":"' + _aj_description.value + '", ' +
-            '"price":' + _aj_price.value + ', ' +
-            '"route":"' + jobRoute + '", ' +
-            '"tags":"' + jobTags + '", ' +
-            '"postDate":"' + dateTime + '", ' +
-            '"departureDate":"' + _aj_departure.value + '", ' +
-            '"arrivalDate":"' + _aj_arrival.value + '", '+
-            '"sale": 0 ,' +
-            '"ownerId":' + authUser.id + 
+            jobJSON = '{' +
+                '"description":"' + _aj_description.value + '", ' +
+                '"price":' + _aj_price.value + ', ' +
+                '"route":"' + jobRoute + '", ' +
+                '"tags":"' + jobTags + '", ' +
+                '"postDate":"' + dateTime + '", ' +
+                '"departureDate":"' + _aj_departure.value + '", ' +
+                '"arrivalDate":"' + _aj_arrival.value + '", '+
+                '"sale": 0 ,' +
+                '"ownerId":' + authUser.id + 
             '}';
-            console.log(jobJSON);
             const xhr = new XMLHttpRequest();
             
-            
-
-
             xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                if (Object.keys(this.responseText).length == 0) {
-                    alert("Campurile sunt completate invalid");
-                } else {
-                   response = JSON.parse(this.responseText);
-                    console.log(response.code);
-                    if (response.code != 0) {
-                        alert("Server response: " + response.message);
+                if (this.readyState == 4 && this.status == 200) {
+                    if (Object.keys(this.responseText).length == 0) {
+                        alert("Campurile sunt completate invalid");
                     } else {
-                       g2g = true;
-                       alert("Job adaugat cu succes! Te poti autentifica."); 
-                       lastId = response.code;
-                        xhrPhotos.open('post', SERVER_LINK + "/api/v1/photos/" + authUser.id, true);
-                        xhrPhotos.setRequestHeader("Accept", "application/json");
-                        xhrPhotos.setRequestHeader("Content-type", "application/json");
-                        xhrPhotos.send(photoJSON);
+                        response = JSON.parse(this.responseText);
+                        if (response.code < 0) {
+                            alert("Server response: " + response.message);
+                        } else {
+                            alert("Job adaugat cu succes!"); 
+                            lastId = response.code;
+
+                            var photoJSON = '{' +
+                                '"links":"' + jobPhotos + '", ' +
+                                '"jobId":' + lastId +
+                            '}';
+                            
+                            xhrPhotos.open('post', SERVER_LINK + "/api/v1/photos", true);
+                            xhrPhotos.setRequestHeader("Accept", "application/json");
+                            xhrPhotos.setRequestHeader("Content-type", "application/json");
+                            xhrPhotos.send(photoJSON);
+                        }
                     }
-                }
-            } else if (this.status == 400) {
-                        console.log(this.responseText);
                 }
             }
             
@@ -142,41 +138,16 @@ addJobsubmit.onclick = function() {
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.send(jobJSON);
             
-            
-
             const xhrPhotos = new XMLHttpRequest();
-            var photoJSON = '{' +
-            '"link":"' + jobPhotos + '", ' + 
-             '"jobId":' + lastId + 
-            '}';
-            console.log(photoJSON);
-            
+
              xhrPhotos.onreadystatechange = function() {
-                 console.log(this.readyState, this.status);
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log(this.readyState, this.status);
-                    if (Object.keys(this.responseText).length == 0) {
-                        console.log(3434);
-                        alert("Campurile sunt completate invalid");
-                    } else {
-
-                        console.log(photoJSON);
-                        var response = JSON.parse(this.responseText);
-                        if (response.code != 0) {
-                            alert("Server response: " + response.message);
-                        } else {
-                           alert("Serviciu adaugat cu succes cu succes!");    
-                        }
+                    var response = JSON.parse(this.responseText);
+                    if (response.code != 0) {
+                        alert("Server response: " + response.message);
                     }
-                }  else {
-                        console.log(this.responseText);
-                }
+                } 
             }
-            
-            
-            
-
-    
-    }
+        }
     }
 }

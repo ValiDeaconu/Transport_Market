@@ -31,7 +31,8 @@ var _rv_note_v = false;
 _rv_note.onchange = function() {
     var text = _rv_note.value;
     console.log(_rv_note.value);
-    if (!/^([1-9]{1})$/.test(text)) {
+    var note = parseInt(text, 10)
+    if (!/^([1-9]{1})$/.test(text) || note < 1 || note > 5) {
         document.getElementById("review-note-message").style = "visibility: visible; opacity: 1;";
         _rv_note_v = false;
         console.log(343);
@@ -48,11 +49,11 @@ reviewsubmit.onclick = function() {
     console.log(_rv_note_v, _rv_note.value);
     if (_rv_note_v == false) {
         alert("Campurile sunt completate invalid.");
-        } else {
-            var authUser = AuthManager.getAuthentificatedUser();
-            if (authUser == null)
-                console.log("Niciun user autentificat.");
-            else {
+    } else {
+        var authUser = AuthManager.getAuthentificatedUser();
+        if (authUser == null)
+            console.log("Niciun user autentificat.");
+        else {
             var reviewJSON = '{' +
                 '"description":"' + _rv_description.value + '", ' +
                 '"rate":' + _rv_note.value + ', ' +

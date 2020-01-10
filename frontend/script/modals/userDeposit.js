@@ -29,7 +29,7 @@ var _d_amount_v = false;
 
 _d_owner.onchange = function() {
     var text = _d_owner.value;
-    if (!/^([a-zA-Z])$/.test(text)) {
+    if (!/^([a-zA-Z\ ]*)$/.test(text)) {
         document.getElementById("deposit-owner-message").style = "visibility: visible; opacity: 1;";
         _d_owner_v = false;
     } else {

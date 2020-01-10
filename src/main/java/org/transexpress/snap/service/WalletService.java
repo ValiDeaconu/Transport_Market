@@ -6,6 +6,8 @@ import org.transexpress.snap.dal.WalletDal;
 import org.transexpress.snap.misc.ResponseMessage;
 import org.transexpress.snap.model.Wallet;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,10 +34,13 @@ public class WalletService {
 
     public List<Wallet> getAllWalletsForUserId(int userId){
         List<Wallet> wallets = walletDal.selectAllWallets();
-        List<Wallet> allWalletsForUser = wallets.stream().
+
+        if (wallets == null)
+            return new ArrayList<Wallet>();
+
+        return wallets.stream().
                 filter(w -> w.getUserId() == userId).
                 collect(Collectors.toList());
-        return allWalletsForUser;
     }
 
     public ResponseMessage updateDeposit(int userId, int balance){

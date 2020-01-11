@@ -61,8 +61,8 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/deleteByUsername/{username}")
-    public void deleteUserByUsername(@PathVariable("username") String username){
-        userService.deleteUserByUsername(username);
+    public ResponseMessage deleteUserByUsername(@PathVariable("username") String username){
+        return userService.deleteUserByUsername(username);
     }
     @PutMapping(path = "{id}")
     public ResponseMessage updateUserByID(@PathVariable("id") int id, @Valid @NonNull @RequestBody User userToUpdate) {

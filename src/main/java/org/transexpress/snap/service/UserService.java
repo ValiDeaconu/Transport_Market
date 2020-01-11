@@ -103,8 +103,12 @@ public class UserService {
         return userDal.deleteUserByID(id);
     }
 
-    public int deleteUserByUsername(String username){
-        return userDal.deleteUserByUsername(username);
+    public ResponseMessage deleteUserByUsername(String username){
+        int affectedRows = userDal.deleteUserByUsername(username);
+        if (affectedRows != 1)
+            return new ResponseMessage("Database error", -1);
+
+        return new ResponseMessage("User successfully deleted", 0);
     }
 
     public ResponseMessage updateUser(int id, User newUser) {

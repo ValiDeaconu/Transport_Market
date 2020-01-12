@@ -251,7 +251,7 @@ public class UserDataAccessService implements UserDal {
         try {
             Statement stmt = handle.createStatement();
             rowCount = stmt.executeUpdate("UPDATE users SET" +
-                    " username = '" + user.getUsername() + "'" +
+                    " username ='" + user.getUsername() + "'" +
                     ", password = '" + user.getPassword() + "'" +
                     ", phone = '" + user.getPhone() + "'" +
                     ", email = '" + user.getEmail() + "'" +

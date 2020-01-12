@@ -111,8 +111,10 @@ as_update.onclick = function(){
     var au_new_username = document.getElementById("search-update-username").value;
     if( au_new_username == "") au_new_username=as_userInformation.username;
     
+    console.log(au_new_username);
+    
     var au_new_phone = document.getElementById("update-phone").value;
-    if(au_new_phone == "") au_new_description = as_userInformation.phone;
+    if(au_new_phone == "") au_new_phone = as_userInformation.phone;
         
     var au_new_email = document.getElementById("update-email").value;
     if (au_new_email == "") au_new_email = as_userInformation.email;
@@ -120,23 +122,29 @@ as_update.onclick = function(){
     var au_new_description = document.getElementById("update-description").value;
     if (au_new_description == "") au_new_description = as_userInformation.description;
     
+    
     var au_new_isprovider = document.getElementById("update-is-provider").checked;
     var au_new_isadmin = document.getElementById("update-is-admin").checked;
     
     var au_newUser = '{' +
-        '"username":'+au_new_username+', '+
-        '"phone":'+au_new_phone+', '+
-        '"email":'+au_new_email+', '+
-     '"descriptione":'+au_new_description+', '+
-        '"profile_picture_link":'+as_userInformation.profilePictureLink+', '+
+        '"username": "'+au_new_username+'", '+
+        '"password": "'+ as_userInformation.password + '", ' +
+        '"phone":"'+au_new_phone+'", '+
+        '"email":"'+au_new_email+'", '+
+     '"description":"'+au_new_description+'", '+
+        '"profile_picture_link":"'+as_userInformation.profilePictureLink+'", '+
         '"admin":'+au_new_isadmin+', '+
-        '"provider":'+au_new_isprovider+', '+
+        '"provider":'+au_new_isprovider+
         '}';
+
     
     const xhr = new XMLHttpRequest();
     
     xhr.onreadystatechange = function(){
+            
+   //console.log(this.status);
         if (this.readyState == 4 && this.status == 200) {
+            
             if (Object.keys(this.responseText).length == 0) {
                 alert("Campurile sunt completate invalid");
             } else {
@@ -147,14 +155,12 @@ as_update.onclick = function(){
                    alert("Cont modificat cu succes");    
                 }
             }
-        }else if (this.status == 415) {
-                var response = this.responseText;
-                var message = response.errors[0].defaultMessage;
-                alert("Server response: " + message);
         }
     }
-    
+   // console.log(au_id);
     xhr.open('put', SERVER_LINK + "/api/v1/user/" + au_id, true);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-type", "application/json");
     xhr.send(au_newUser); 
     
     

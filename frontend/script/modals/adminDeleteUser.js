@@ -37,31 +37,27 @@ var deletesubmit = document.getElementById("delete-submit");
 
 deletesubmit.onclick = function(){
     
-    var dd_username = d_username.value;
     if (dd_username = "" || ! _d_username_v){
         alert("Campurile sunt completate eronat");
     }else{
         const xhr = new XMLHttpRequest();
-
-        xhr.open('DELETE', SERVER_LINK + "/api/v1/user/deleteByUsername/" + dd_username, true);
-        xhr.onload = function(){
-            
-            /*var response = JSON.parse(this.responseText);
-            if (reponse.code == 0) {
-                // success
-            } else {
-                // error
-                console.log(response.message);
-            }*/
-            
-            var users = JSON.parse(xhr.responseText);
-            if( this.readyState == 4 && this.status == 200){
-                console.table(users);
+        xhr.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+            if (Object.keys(this.responseText).length == 0){
+                alert("Campurile sunt completate invalid");
             }else{
-                console.error(users);
-            }
+                var response = JSON.parse(this.responseText);
+                console.log(d_username.value);
+                if (response.code == 0) {
+                    alert("Cont sters");
+                } else {
+                    // error
+                    console.log(response.message);
+                }
+              }
+            }   
         }
-
+        xhr.open('DELETE', SERVER_LINK + "/api/v1/user/deleteByUsername/" + d_username.value, true);
         xhr.send();
         
     }
